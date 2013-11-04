@@ -20,4 +20,9 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    // test change
+    public void nothingToDo() {
+    	;
+    }
+    
 }
