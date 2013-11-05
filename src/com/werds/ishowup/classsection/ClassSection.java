@@ -67,6 +67,7 @@ public class ClassSection {
 		this.weekdays = new boolean[7];
 		for (int i = 0; i < classWeekdays.length(); i++) {
 			//switch ()
+			// yay!
 		}
 		
 	}
