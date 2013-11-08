@@ -1,15 +1,27 @@
 package com.werds.ishowup;
 
+import java.io.IOException;
+
+import com.werds.ishowup.validation.Validator;
+
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.app.Activity;
-import android.view.Menu;
+import android.content.Intent;
+import android.widget.Button;
+import android.view.*;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
+	private Button scanButton; 
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    	StrictMode.enableDefaults();
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        scanButton = (Button)findViewById(R.id.button_Scan);
+        scanButton.setOnClickListener(this);
     }
 
 
@@ -20,9 +32,13 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    // test change
-    public void nothingToDo() {
-    	;
-    }
-    
+
+	@Override
+	public void onClick(View v) {
+		System.out.println("click!");
+		if (v.getId() == R.id.button_Scan) {
+			MainActivity.this.startActivity(new Intent(MainActivity.this, TestActivity.class));
+		}
+	}
+
 }
