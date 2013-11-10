@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 
 public class ValidateActivity extends Activity {
 
@@ -13,7 +14,9 @@ public class ValidateActivity extends Activity {
 		setContentView(R.layout.activity_validate);
 		
 		Bundle bundle = getIntent().getExtras();
-		String qrCodeData = bundle.getString("QRCodeData");
+		String qrCodeData = new String(bundle.getString("QRCodeData"));
+		TextView text = (TextView) findViewById(R.id.text);
+		text.setText(qrCodeData);
 		Log.d("QRCodeData", qrCodeData);
 	}
 

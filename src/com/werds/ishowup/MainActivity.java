@@ -13,7 +13,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    	//StrictMode.enableDefaults();
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         scanButton = (Button)findViewById(R.id.button_Scan);
