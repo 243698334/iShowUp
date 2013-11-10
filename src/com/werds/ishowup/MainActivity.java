@@ -1,15 +1,13 @@
 package com.werds.ishowup;
 
-import java.io.IOException;
-
-import com.werds.ishowup.validation.Validator;
-
-import android.os.Bundle;
-import android.os.StrictMode;
+import net.sourceforge.zbar.android.CameraTest.CameraTestActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.StrictMode;
+import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
-import android.view.*;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -37,7 +35,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onClick(View v) {
 		System.out.println("click!");
 		if (v.getId() == R.id.button_Scan) {
-			MainActivity.this.startActivity(new Intent(MainActivity.this, TestActivity.class));
+			MainActivity.this.startActivity(new Intent(MainActivity.this, ValidateActivity.class));
 		}
 	}
 
