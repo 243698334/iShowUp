@@ -62,36 +62,49 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shopper_icon=0x7f020003;
     }
     public static final class id {
-        public static final int ScanButton=0x7f09000b;
-        public static final int action_settings=0x7f09000c;
-        public static final int button_Scan=0x7f090008;
-        public static final int cameraPreview=0x7f090009;
+        public static final int ScanButton=0x7f090012;
+        public static final int action_forgot_password=0x7f090013;
+        public static final int action_settings=0x7f090014;
+        public static final int button_Scan=0x7f09000f;
+        public static final int cameraPreview=0x7f090010;
         public static final int decode=0x7f090000;
         public static final int decode_failed=0x7f090001;
         public static final int decode_succeeded=0x7f090002;
         public static final int launch_product_query=0x7f090003;
+        public static final int login=0x7f09000c;
+        public static final int login_form=0x7f090009;
+        public static final int login_status=0x7f090007;
+        public static final int login_status_message=0x7f090008;
+        public static final int netid=0x7f09000a;
+        public static final int password=0x7f09000b;
         public static final int quit=0x7f090004;
         public static final int restart_preview=0x7f090005;
         public static final int return_scan_result=0x7f090006;
-        public static final int scanText=0x7f09000a;
-        public static final int textView1=0x7f090007;
+        public static final int scanText=0x7f090011;
+        public static final int sign_in_button=0x7f09000d;
+        public static final int textView1=0x7f09000e;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_scan=0x7f030001;
-        public static final int activity_test=0x7f030002;
-        public static final int activity_validate=0x7f030003;
+        public static final int activity_login=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_scan=0x7f030002;
+        public static final int activity_test=0x7f030003;
+        public static final int activity_validate=0x7f030004;
     }
     public static final class menu {
-        public static final int main=0x7f0c0000;
-        public static final int test=0x7f0c0001;
-        public static final int validate=0x7f0c0002;
+        public static final int login=0x7f0c0000;
+        public static final int main=0x7f0c0001;
+        public static final int test=0x7f0c0002;
+        public static final int validate=0x7f0c0003;
     }
     public static final class raw {
         public static final int beep=0x7f050000;
     }
     public static final class string {
+        public static final int action_forgot_password=0x7f0a0089;
         public static final int action_settings=0x7f0a0001;
+        public static final int action_sign_in_register=0x7f0a0087;
+        public static final int action_sign_in_short=0x7f0a0088;
         public static final int app_name=0x7f0a0000;
         public static final int app_picker_name=0x7f0a0007;
         public static final int bookmark_picker_name=0x7f0a0008;
@@ -129,6 +142,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int contents_text=0x7f0a0028;
         public static final int dummy_button=0x7f0a0004;
         public static final int dummy_content=0x7f0a0005;
+        public static final int error_field_required=0x7f0a008e;
+        public static final int error_incorrect_password=0x7f0a008d;
+        public static final int error_invalid_email=0x7f0a008b;
+        public static final int error_invalid_password=0x7f0a008c;
         public static final int hello_world=0x7f0a0002;
         public static final int history_clear_one_history_text=0x7f0a002a;
         public static final int history_clear_text=0x7f0a0029;
@@ -137,6 +154,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int history_empty_detail=0x7f0a002d;
         public static final int history_send=0x7f0a002e;
         public static final int history_title=0x7f0a002f;
+        public static final int login_progress_signing_in=0x7f0a008a;
         public static final int menu_encode_mecard=0x7f0a0030;
         public static final int menu_encode_vcard=0x7f0a0031;
         public static final int menu_help=0x7f0a0032;
@@ -205,6 +223,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int preferences_try_bsplus=0x7f0a006f;
         public static final int preferences_try_bsplus_summary=0x7f0a0070;
         public static final int preferences_vibrate_title=0x7f0a0073;
+        /**  Strings related to login 
+         */
+        public static final int prompt_email=0x7f0a0085;
+        public static final int prompt_password=0x7f0a0086;
         public static final int result_address_book=0x7f0a0074;
         public static final int result_calendar=0x7f0a0075;
         public static final int result_email_address=0x7f0a0076;
@@ -217,6 +239,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int result_uri=0x7f0a007d;
         public static final int result_wifi=0x7f0a007e;
         public static final int sbc_name=0x7f0a007f;
+        public static final int title_activity_login=0x7f0a0084;
         public static final int title_activity_scan=0x7f0a0003;
         public static final int title_activity_test=0x7f0a0006;
         public static final int title_activity_validate=0x7f0a0083;
@@ -253,8 +276,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int AppTheme=0x7f0b0001;
         public static final int ButtonBar=0x7f0b0003;
         public static final int ButtonBarButton=0x7f0b0004;
-        public static final int FullscreenActionBarStyle=0x7f0b0005;
+        public static final int FullscreenActionBarStyle=0x7f0b0006;
         public static final int FullscreenTheme=0x7f0b0002;
+        public static final int LoginFormContainer=0x7f0b0005;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

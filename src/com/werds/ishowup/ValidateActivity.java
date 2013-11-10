@@ -1,11 +1,11 @@
 package com.werds.ishowup;
 
+import net.sourceforge.zbar.CameraPreview;
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
 import net.sourceforge.zbar.ImageScanner;
 import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
-import net.sourceforge.zbar.android.CameraTest.CameraPreview;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PreviewCallback;

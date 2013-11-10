@@ -2,6 +2,7 @@
 <lint>
     <issue id="NewApi">
         <ignore path="src/com/werds/ishowup/MainActivity.java" />
+        <ignore path="src/com/werds/ishowup/dbcommunication/DatabaseReader.java" />
         <ignore path="src/com/werds/ishowup/validation/Validator.java" />
     </issue>
 </lint>

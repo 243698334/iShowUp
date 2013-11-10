@@ -40,6 +40,11 @@
             android:name="com.werds.ishowup.ValidateActivity"
             android:label="@string/title_activity_validate" >
         </activity>
+        <activity
+            android:name="com.werds.ishowup.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
     </application>
 
 </manifest>

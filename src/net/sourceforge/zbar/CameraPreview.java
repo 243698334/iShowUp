@@ -3,7 +3,7 @@
  * 
  * Created by lisah0 on 2012-02-24
  */
-package net.sourceforge.zbar.android.CameraTest;
+package net.sourceforge.zbar;
 
 import java.io.IOException;
 

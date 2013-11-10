@@ -1,10 +1,8 @@
 package com.werds.ishowup;
 
-import net.sourceforge.zbar.android.CameraTest.CameraTestActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +13,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    	StrictMode.enableDefaults();
+    	//StrictMode.enableDefaults();
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         scanButton = (Button)findViewById(R.id.button_Scan);
@@ -35,7 +33,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onClick(View v) {
 		System.out.println("click!");
 		if (v.getId() == R.id.button_Scan) {
-			MainActivity.this.startActivity(new Intent(MainActivity.this, ValidateActivity.class));
+			MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
 		}
 	}
 
