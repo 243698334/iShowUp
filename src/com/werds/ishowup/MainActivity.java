@@ -33,7 +33,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onClick(View v) {
 		System.out.println("click!");
 		if (v.getId() == R.id.button_Scan) {
-			MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
+			MainActivity.this.startActivity(new Intent(MainActivity.this, ScanActivity.class));
 		}
 	}
 
