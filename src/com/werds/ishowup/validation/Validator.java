@@ -1,24 +1,21 @@
 package com.werds.ishowup.validation;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
-
-import com.werds.ishowup.course.TodaysClass;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
-import android.os.StrictMode;
 import android.util.Log;
+
+import com.werds.ishowup.course.TodaysClass;
+import com.werds.ishowup.dbcommunication.DatabaseReader;
 
 public class Validator extends Service{
 
@@ -27,9 +24,9 @@ public class Validator extends Service{
 	//private String secretKey = ""; // Fetch from database.
 	
 	// The URL for the PHP script to fetch the secret key.
-	private static final String DATABASE_URL = "http://web.engr.illinois.edu/~ishowup4cs411/";
-	// The tolerance of the time difference between the generation and validation of the QR code.
-	private static final double TIME_DIFFERENCE_TOLERANCE = 1000;
+	private static final String DATABASE_SECRETKEY_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/secretkey.php";
+	// The tolerance of the time difference in seconds between the generation and validation of the QR code.
+	private static final double TIME_DIFFERENCE_TOLERANCE = 300;
 	// The tolerance of the distance difference in percentage between the building and the user's location. 
 	private static final double LOCATION_DIFFERENCE_TOLERANCE = 0.01;
 	
@@ -41,36 +38,47 @@ public class Validator extends Service{
 	public Validator(String qrCodeData) throws IOException {
 		//this.currTime = System.currentTimeMillis() / 1000;
 		this.qrCodeData = new String(qrCodeData);
-		StrictMode.enableDefaults();
+		// StrictMode.enableDefaults();
 	}
 	
-	private String fetchSecretKey(String course) {
-		// String course determines which database to be queried. 
-		String secretKey = "";
-		InputStream isr = null; 
-		try {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost("http://web.engr.illinois.edu/~ishowup4cs411/" + course + "_secretkey.php");
-			HttpResponse HttpResponse = httpClient.execute(httpPost);
-			HttpEntity HttpEntity = HttpResponse.getEntity();
-			isr = HttpEntity.getContent();
-		} catch (Exception e) {
-			Log.e("log_tag", "Error in http connection "+e.toString());
-		}
+	private String fetchSecretKey(String crn, long qrCodeGenerateEpochTime) {
+		/*Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy");
+		String todaysDate = sdf.format(cal.getTime());
+		// For testing purpose, manually set todaysDate to be the ones needed.
+		todaysDate = "11062013";*/
 		
+		SimpleDateFormat sdfDate = new SimpleDateFormat("MMddyyyy");
+		String dateOfClass = sdfDate.format(new Date(qrCodeGenerateEpochTime));
+		
+		ArrayList<String> parameters = new ArrayList<String>();
+		parameters.add("crn");
+		parameters.add("date");
+		ArrayList<String> values = new ArrayList<String>();
+		values.add(crn);
+		values.add(dateOfClass);
+		
+		FetchSecretKeyTask mFetch = new FetchSecretKeyTask();
+		String secretKey = null;
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(isr, "iso-8859-1"), 8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			isr.close();
-			secretKey = sb.toString();
+			secretKey = mFetch.execute(parameters, values).get();
 		} catch (Exception e) {
-			Log.e("log_tag", "Error  converting result "+e.toString());
+			Log.e("", "");
 		}
 		return secretKey;
+	}
+	
+	public class FetchSecretKeyTask extends AsyncTask<ArrayList<String>, Void, String> {
+
+		@Override
+		protected String doInBackground(ArrayList<String>... arrLists) {
+			ArrayList<String> parameters = arrLists[0];
+			ArrayList<String> values = arrLists[1];
+			
+			DatabaseReader secretKeyFetcher = new DatabaseReader(DATABASE_SECRETKEY_URL);
+			String secretKey = new String(secretKeyFetcher.fetchDataByString(parameters, values));
+			return secretKey;
+		}
 	}
 	
 	/**
@@ -78,11 +86,18 @@ public class Validator extends Service{
 	 * 							Index 1: Location validation status.
 	 * 							Index 2: Time validation status.
 	 * 							Index 3: SecretKey validation status.
+	 * @return null if QR Code is not JSON formatted
 	 * @throws JSONException
 	 */
 	public boolean[] validate() throws JSONException {
+		TodaysClass todaysClass = null;
+		try {
+			todaysClass = new TodaysClass(qrCodeData);
+		} catch (JSONException e) {
+			return null;
+		} // return null if invalid JSON formatted QR Code
+		
 		boolean[] status = new boolean[4];
-		TodaysClass todaysClass = new TodaysClass(qrCodeData);
 		
 		// Check location
 		LocationTracker userLocation = new LocationTracker(this);
@@ -95,12 +110,12 @@ public class Validator extends Service{
 		
 		// Check time
 		long userTime = System.currentTimeMillis() / 1000;
-		long qrCodeGenTime = todaysClass.getQRCodeGenerateTime();
-		status[2] = Math.abs(userTime - qrCodeGenTime) <= TIME_DIFFERENCE_TOLERANCE;
+		long qrCodeGenerateTime = todaysClass.getQRCodeGenerateEpochTime();
+		status[2] = Math.abs(userTime - qrCodeGenerateTime) <= TIME_DIFFERENCE_TOLERANCE;
 		
 		// Check secret key
 		String userSecretKey = new String(todaysClass.getSecretKey());
-		String classSecretKey = new String(fetchSecretKey(todaysClass.getCourseID()));
+		String classSecretKey = new String(fetchSecretKey(todaysClass.getCRN(), todaysClass.getQRCodeGenerateEpochTime()));
 		status[3] = userSecretKey.equals(classSecretKey);
 		
 		// Check overall	

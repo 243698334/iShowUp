@@ -5,4 +5,7 @@
         <ignore path="src/com/werds/ishowup/dbcommunication/DatabaseReader.java" />
         <ignore path="src/com/werds/ishowup/validation/Validator.java" />
     </issue>
+    <issue id="SimpleDateFormat">
+        <ignore path="src/com/werds/ishowup/validation/Validator.java" />
+    </issue>
 </lint>

@@ -31,6 +31,7 @@ public class LoginActivity extends Activity {
 	 */
 	private UserLoginTask mAuthTask = null;
 
+	/* Login php of the database server */
 	private static final String DATABASE_LOGIN_PHP = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/login.php";
 
 	private String mNetID;

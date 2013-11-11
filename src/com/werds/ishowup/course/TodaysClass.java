@@ -3,12 +3,14 @@ package com.werds.ishowup.course;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.text.format.Time;
+
 import java.util.*;
 
 public class TodaysClass extends Course {
 
 	private Date todaysDate;
-	private long qrCodeGenerateTime;
+	private long qrCodeGenerateEpochTime;
 	private String secretKey;
 	
 	public TodaysClass(String courseData) throws JSONException {
@@ -18,13 +20,17 @@ public class TodaysClass extends Course {
 
 	private void importTodaysClass() throws JSONException {
 		this.todaysDate = new Date();
-		JSONObject qrCodeInfo = super.classInfo.getJSONObject("QRCodeInfo");
-		qrCodeGenerateTime = qrCodeInfo.getInt("GenTime");
-		secretKey = new String(qrCodeInfo.getString("SecretKey"));
+		JSONObject qrCodeInfo = super.courseInfo.getJSONObject("QRCodeInfo");
+		this.qrCodeGenerateEpochTime = qrCodeInfo.getInt("GenTime");
+		this.secretKey = new String(qrCodeInfo.getString("SecretKey"));
 	}
 
-	public long getQRCodeGenerateTime() {
-		return qrCodeGenerateTime;
+	public long getQRCodeGenerateEpochTime() {
+		return qrCodeGenerateEpochTime;
+	}
+	
+	public Time getQRCodeGenerateTime() {
+		return null;
 	}
 	
 	public Date getTodaysClassDate() {
