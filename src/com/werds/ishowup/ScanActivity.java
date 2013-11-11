@@ -16,11 +16,7 @@ import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 public class ScanActivity extends Activity {
 
@@ -28,12 +24,8 @@ public class ScanActivity extends Activity {
 	private CameraPreview mPreview;
 	private Handler autoFocusHandler;
 
-	TextView scanText;
-	Button scanButton;
-
 	ImageScanner scanner;
 
-	private boolean barcodeScanned = false;
 	private boolean previewing = true;
 
 	static {
@@ -60,22 +52,6 @@ public class ScanActivity extends Activity {
 		FrameLayout preview = (FrameLayout) findViewById(R.id.cameraPreview);
 		preview.addView(mPreview);
 
-		scanText = (TextView) findViewById(R.id.scanText);
-
-		scanButton = (Button) findViewById(R.id.ScanButton);
-
-		scanButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (barcodeScanned) {
-					barcodeScanned = false;
-					scanText.setText("Scanning...");
-					mCamera.setPreviewCallback(previewCb);
-					mCamera.startPreview();
-					previewing = true;
-					mCamera.autoFocus(autoFocusCB);
-				}
-			}
-		});
 	}
 
 	public void onPause() {
@@ -134,8 +110,6 @@ public class ScanActivity extends Activity {
 				SymbolSet syms = scanner.getResults();
 				for (Symbol sym : syms) {
 					String qrCodeData = sym.getData(); 
-					scanText.setText("barcode result " + qrCodeData);
-					barcodeScanned = true;
 					Intent intent = new Intent(ScanActivity.this, ValidateActivity.class);
 					intent.putExtra("QRCodeData", qrCodeData);
 					startActivity(intent);

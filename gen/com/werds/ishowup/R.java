@@ -62,9 +62,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shopper_icon=0x7f020003;
     }
     public static final class id {
-        public static final int ScanButton=0x7f090012;
-        public static final int action_forgot_password=0x7f090014;
-        public static final int action_settings=0x7f090015;
+        public static final int action_forgot_password=0x7f090012;
+        public static final int action_settings=0x7f090013;
         public static final int button_Scan=0x7f09000f;
         public static final int cameraPreview=0x7f090010;
         public static final int decode=0x7f090000;
@@ -80,9 +79,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int quit=0x7f090004;
         public static final int restart_preview=0x7f090005;
         public static final int return_scan_result=0x7f090006;
-        public static final int scanText=0x7f090011;
         public static final int sign_in_button=0x7f09000d;
-        public static final int text=0x7f090013;
+        public static final int text=0x7f090011;
         public static final int textView1=0x7f09000e;
     }
     public static final class layout {

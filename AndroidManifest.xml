@@ -25,15 +25,11 @@
             android:name="com.werds.ishowup.ScanActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_scan"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="com.werds.ishowup.TestActivity"
             android:label="@string/title_activity_test" >
-        </activity>
-        <activity
-            android:name="com.werds.ishowup.ScanActivity"
-            android:label="@string/title_activity_validate" >
         </activity>
         <activity
             android:name="com.werds.ishowup.LoginActivity"
