@@ -66,7 +66,7 @@ public class LocationTracker extends Service implements LocationListener {
 		gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if (!gpsEnabled && !networkEnabled) {
 			this.locationAvailable = false;
-			showServiceAlert();
+			//showServiceAlert();
 			return null;
 		} else this.locationAvailable = true;
 		

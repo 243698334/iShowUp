@@ -15,6 +15,10 @@ public class ValidateActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_validate);
 		
+		/* Get current location data */
+		
+		
+		
 		Bundle bundle = getIntent().getExtras();
 		String qrCodeData = new String(bundle.getString("QRCodeData"));
 		TextView text = (TextView) findViewById(R.id.text);
