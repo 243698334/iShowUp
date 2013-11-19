@@ -1,5 +1,7 @@
 package com.werds.ishowup;
 
+import com.werds.ishowup.validation.LocationTracker;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,9 @@ public class ValidateActivity extends Activity {
 		TextView text = (TextView) findViewById(R.id.text);
 		text.setText(qrCodeData);
 		Log.d("QRCodeData", qrCodeData);
+		LocationTracker mlocation = new LocationTracker(this);
+		text.setText(Double.toString(mlocation.getLatitude()));
+		
 	}
 
 	@Override

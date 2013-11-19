@@ -63,7 +63,7 @@ public class Validator extends Service{
 		try {
 			secretKey = mFetch.execute(parameters, values).get();
 		} catch (Exception e) {
-			Log.e("", "");
+			Log.d("1", "");
 		}
 		return secretKey;
 	}
@@ -90,12 +90,8 @@ public class Validator extends Service{
 	 * @throws JSONException
 	 */
 	public boolean[] validate() throws JSONException {
-		TodaysClass todaysClass = null;
-		try {
-			todaysClass = new TodaysClass(qrCodeData);
-		} catch (JSONException e) {
-			return null;
-		} // return null if invalid JSON formatted QR Code
+		TodaysClass todaysClass = new TodaysClass(qrCodeData);
+		
 		
 		boolean[] status = new boolean[4];
 		

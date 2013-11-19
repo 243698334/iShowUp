@@ -59,10 +59,13 @@ public class LocationTracker extends Service implements LocationListener {
 		locationManager = (LocationManager)mContext.getSystemService(LOCATION_SERVICE);
 		
 		// Get service status
+	
+		
 		networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 		gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if (!gpsEnabled && !networkEnabled) {
 			this.locationAvailable = false;
+			showServiceAlert();
 			return null;
 		} else this.locationAvailable = true;
 		
