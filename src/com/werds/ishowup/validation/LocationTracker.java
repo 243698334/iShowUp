@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
 public class LocationTracker extends Service implements LocationListener {
 
@@ -71,7 +72,7 @@ public class LocationTracker extends Service implements LocationListener {
 		
 		if (networkEnabled) {
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BETWEEN_UPDATES, MIN_DISTANCE_BETWEEN_UPDATES, this);
-			//Log.d("Network", "Network");
+			Log.d("ServiceProvider", "Network");
 			if (locationManager != null) {
 				location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 				if (location != null) {
@@ -83,7 +84,7 @@ public class LocationTracker extends Service implements LocationListener {
 		// Replace location data if GPS is enabled.
 		if (gpsEnabled) {
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BETWEEN_UPDATES, MIN_DISTANCE_BETWEEN_UPDATES, this);
-			//Log.d("GPS Enabled", "GPS Enabled");
+			Log.d("ServiceProvider", "GPS");
 			if (locationManager != null) {
 				location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 				if (location != null) {
