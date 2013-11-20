@@ -3,9 +3,7 @@ package com.werds.ishowup.validation;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
@@ -13,7 +11,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.werds.ishowup.course.TodaysClass;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
