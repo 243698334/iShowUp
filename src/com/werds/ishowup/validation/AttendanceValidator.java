@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
@@ -17,12 +18,15 @@ import android.util.Log;
 import com.werds.ishowup.course.TodaysClass;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
-public class Validator extends Service{
+public class AttendanceValidator extends Service {
 
-	//private long currTime;
 	private String qrCodeData;
-	//private String secretKey = ""; // Fetch from database.
 	
+	private double latitude;
+	private double longitude;
+	private long epochTime;
+	private String secretKey;
+		
 	// The URL for the PHP script to fetch the secret key.
 	private static final String DATABASE_SECRETKEY_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/secretkey.php";
 	// The tolerance of the time difference in seconds between the generation and validation of the QR code.
@@ -35,13 +39,26 @@ public class Validator extends Service{
 		FAILED_LOCATION_TIME, FAILED_LOCATION_SECRETFAILED_BOTH
 	}
 	
-	public Validator(String qrCodeData) throws IOException {
-		//this.currTime = System.currentTimeMillis() / 1000;
+	public AttendanceValidator(String qrCodeData) throws IOException {
 		this.qrCodeData = new String(qrCodeData);
 		// StrictMode.enableDefaults();
 	}
 	
-	private String fetchSecretKey(String crn, long qrCodeGenerateEpochTime) {
+	private void fetchLocation() {
+		LocationTracker mLocation = new LocationTracker(this);
+		if (mLocation.locationAvailable()) {
+			this.latitude = mLocation.getLatitude();
+			this.longitude = mLocation.getLongitude();
+		} else {
+			this.latitude = this.longitude = 0.0;
+		}
+	}
+	
+	private void fetchEpochTime() {
+		this.epochTime = System.currentTimeMillis() / 1000;
+	}
+	
+	private void fetchSecretKey(String crn, long qrCodeGenerateEpochTime) {
 		/*Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy");
 		String todaysDate = sdf.format(cal.getTime());
@@ -59,13 +76,11 @@ public class Validator extends Service{
 		values.add(dateOfClass);
 		
 		FetchSecretKeyTask mFetch = new FetchSecretKeyTask();
-		String secretKey = null;
 		try {
-			secretKey = mFetch.execute(parameters, values).get();
+			this.secretKey = new String(mFetch.execute(parameters, values).get());
 		} catch (Exception e) {
-			Log.d("1", "");
+			this.secretKey = null;
 		}
-		return secretKey;
 	}
 	
 	public class FetchSecretKeyTask extends AsyncTask<ArrayList<String>, Void, String> {
@@ -76,46 +91,54 @@ public class Validator extends Service{
 			ArrayList<String> values = arrLists[1];
 			
 			DatabaseReader secretKeyFetcher = new DatabaseReader(DATABASE_SECRETKEY_URL);
-			String secretKey = new String(secretKeyFetcher.fetchDataByString(parameters, values));
-			return secretKey;
+			return secretKeyFetcher.fetchDataByString(parameters, values);
 		}
 	}
 	
 	/**
 	 * @return a boolean array. Index 0: Overall validation status. 
-	 * 							Index 1: Location validation status.
-	 * 							Index 2: Time validation status.
-	 * 							Index 3: SecretKey validation status.
+	 * 							Index 1: Valid TodaysClass object
+	 * 							Index 2: Location validation status.
+	 * 							Index 3: Time validation status.
+	 * 							Index 4: SecretKey validation status
 	 * @return null if QR Code is not JSON formatted
 	 * @throws JSONException
 	 */
 	public boolean[] validate() throws JSONException {
+		boolean[] status = new boolean[5];
+		for (int i = 0; i < status.length; i++) {
+			status[i] = false;
+		}
+		
+		// Check valid TodaysClass object
 		TodaysClass todaysClass = new TodaysClass(qrCodeData);
-		
-		
-		boolean[] status = new boolean[4];
+		boolean[] importStatus = todaysClass.importTodaysClass();
+		if (importStatus[0] == false) {
+			return status;
+		} else {
+			status[1] = true;
+		}
 		
 		// Check location
-		LocationTracker userLocation = new LocationTracker(this);
-		double userLatitude = userLocation.getLatitude();
-		double userLongitude = userLocation.getLongitude();
+		fetchLocation();
 		double classLatitude = todaysClass.getLatitude();
 		double classLongitude = todaysClass.getLongitude();
-		status[1] = Math.abs(userLatitude - classLatitude) <= LOCATION_DIFFERENCE_TOLERANCE &&
-				Math.abs(userLongitude - classLongitude) <= LOCATION_DIFFERENCE_TOLERANCE;
+		status[2] = Math.abs(this.latitude - classLatitude) <= LOCATION_DIFFERENCE_TOLERANCE &&
+				Math.abs(this.longitude - classLongitude) <= LOCATION_DIFFERENCE_TOLERANCE;
 		
 		// Check time
-		long userTime = System.currentTimeMillis() / 1000;
+		fetchEpochTime();
 		long qrCodeGenerateTime = todaysClass.getQRCodeGenerateEpochTime();
-		status[2] = Math.abs(userTime - qrCodeGenerateTime) <= TIME_DIFFERENCE_TOLERANCE;
+		status[3] = Math.abs(this.epochTime - qrCodeGenerateTime) <= TIME_DIFFERENCE_TOLERANCE;
+		status[3] = true;
 		
 		// Check secret key
+		fetchSecretKey(todaysClass.getCRN(), todaysClass.getQRCodeGenerateEpochTime());
 		String userSecretKey = new String(todaysClass.getSecretKey());
-		String classSecretKey = new String(fetchSecretKey(todaysClass.getCRN(), todaysClass.getQRCodeGenerateEpochTime()));
-		status[3] = userSecretKey.equals(classSecretKey);
+		status[4] = userSecretKey.equals(this.secretKey);
 		
 		// Check overall	
-		status[0] = status[1] && status[2] && status[3];
+		status[0] = status[1] && status[2] && status[3] && status[4];
 		return status;
 	}
 

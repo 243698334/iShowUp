@@ -15,7 +15,6 @@ public class ValidateActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_validate);
 		
-		/* Get current location data */
 		
 		
 		

@@ -52,7 +52,7 @@ public class LocationTracker extends Service implements LocationListener {
 		return this.longitude;
 	}
 	
-	public boolean getLocationAvailability() {
+	public boolean locationAvailable() {
 		return this.locationAvailable;
 	}
 	
@@ -66,7 +66,6 @@ public class LocationTracker extends Service implements LocationListener {
 		gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if (!gpsEnabled && !networkEnabled) {
 			this.locationAvailable = false;
-			//showServiceAlert();
 			return null;
 		} else this.locationAvailable = true;
 		
@@ -99,11 +98,12 @@ public class LocationTracker extends Service implements LocationListener {
 	public void showServiceAlert() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 		alertDialog.setTitle("Oops!");
-		alertDialog.setMessage("GPS is not enabled. Wanna turn it on?");
+		alertDialog.setMessage("At least one of the services must be on. Do you want to turn on Network/GPS now?");
 		alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				mContext.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+				
 			}
 		});
 		alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
