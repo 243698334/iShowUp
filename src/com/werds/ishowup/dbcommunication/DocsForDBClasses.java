@@ -35,8 +35,10 @@ public abstract class DocsForDBClasses {
 		 * The parameters are two ArrayList<String> which contains the "keys"
 		 * and the "values" to be queried. Their indices have to be mapped.
 		 * 
-		 * e.g. For Key-Value pairs below: KEY | VALUE "crn" | "12345" "date" |
-		 * "11132013"
+		 * e.g. For Key-Value pairs below: 
+		 *         KEY | VALUE 
+		 *       "crn" | "12345" 
+		 *      "date" | "11132013"
 		 */
 		ArrayList<String> keys = new ArrayList<String>();
 		keys.add("crn");
