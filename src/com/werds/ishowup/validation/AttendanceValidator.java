@@ -88,7 +88,8 @@ public class AttendanceValidator extends Service {
 			ArrayList<String> values = arrLists[1];
 			
 			DatabaseReader secretKeyFetcher = new DatabaseReader(DATABASE_SECRETKEY_URL);
-			return secretKeyFetcher.fetchDataByString(parameters, values);
+			//return secretKeyFetcher.fetchDataByString(parameters, values);
+			return null;
 		}
 	}
 	

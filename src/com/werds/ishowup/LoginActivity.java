@@ -1,6 +1,8 @@
 package com.werds.ishowup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -194,15 +196,12 @@ public class LoginActivity extends Activity {
 		 */
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			ArrayList<String> parameters = new ArrayList<String>();
-			parameters.add("netid");
-			parameters.add("password");
-			ArrayList<String> values = new ArrayList<String>();
-			values.add(mNetID);
-			values.add(mPassword);
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("netid", mNetID);
+			parameters.put("password", mPassword);
 
 			DatabaseReader login = new DatabaseReader(DATABASE_LOGIN_PHP);
-			String loginStatus = new String(login.fetchDataByString(parameters, values));
+			String loginStatus = new String(login.performRead(parameters));
 			return loginStatus.equals("Accept\n");
 		}
 
