@@ -1,4 +1,4 @@
-package com.werds.ishowup;
+package com.werds.ishowup.ui;
 
 import org.json.JSONException;
 
