@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#003B7D</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+
+    <!--
+    ORIGINAL
+    <color name="list_background_pressed">#992416</color> 
+    -->
+
+
+    <!-- Color FROM ISHOWUP -->
+    <color name="white">#ffffffff</color>
+    <color name="black">#00000000</color>
+    <color name="gray">#ff888888</color>
+    <color name="red">#ffff0000</color>
+    <color name="ui_blue">#1C3764</color>
+    <color name="ui_blue_light">#72B5CD</color>
+    <color name="ui_orange">#F47F24</color>
+    <color name="skyblue">#3FA9F5</color>
+    <color name="my_green">#5AB552</color>
+    <color name="my_green_light">#83d37c</color>
+
+</resources>
