@@ -1,4 +1,4 @@
-package info.androidhive.slidingmenu.model;
+package com.werds.ishowup.ui.model;
 
 public class NavDrawerItem {
 	

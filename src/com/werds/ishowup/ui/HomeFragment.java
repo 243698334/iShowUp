@@ -1,5 +1,6 @@
-package info.androidhive.slidingmenu;
+package com.werds.ishowup.ui;
 
+import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.werds.ishowup.ScanActivity;
-import com.werds.ishowup.ValidateActivity;
 
 public class HomeFragment extends Fragment {
 

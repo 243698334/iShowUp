@@ -1,6 +1,5 @@
-package com.werds.ishowup;
+package com.werds.ishowup.ui;
 
-import info.androidhive.slidingmenu.MainActivity;
 import info.androidhive.slidingmenu.R;
 
 import java.util.HashMap;

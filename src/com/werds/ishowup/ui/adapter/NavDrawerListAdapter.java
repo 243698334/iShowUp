@@ -1,9 +1,10 @@
-package info.androidhive.slidingmenu.adapter;
+package com.werds.ishowup.ui.adapter;
 
 import info.androidhive.slidingmenu.R;
-import info.androidhive.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
+
+import com.werds.ishowup.ui.model.NavDrawerItem;
 
 import android.app.Activity;
 import android.content.Context;

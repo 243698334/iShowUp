@@ -1,21 +1,21 @@
-package info.androidhive.slidingmenu;
+package com.werds.ishowup.ui;
 
+import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SignOutFragment extends Fragment {
+public class MyRecordFragment extends Fragment {
 	
-	public SignOutFragment(){}
-	
+	public MyRecordFragment(){}
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
-        View rootView = inflater.inflate(R.layout.fragment_sign_out, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my_record, container, false);
          
         return rootView;
     }
