@@ -31,46 +31,115 @@
 
     <!-- Login form -->
 
-    <ScrollView
+    <RelativeLayout
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
+        android:orientation="vertical" >
 
-        <LinearLayout
-            style="@style/LoginFormContainer"
-            android:orientation="vertical" >
+        <!--
+             <TextView
+            android:id="@+id/app_title"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="60sp" />
+        -->
 
-            <EditText
-                android:id="@+id/netid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/logov2" />
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
+        <EditText
+            android:id="@+id/netid"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="175dp"
+            android:background="@drawable/oval_text_small_angle"
+            android:ems="10"
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true" >
 
-            <Button
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="@string/action_sign_in_register" />
-        </LinearLayout>
-    </ScrollView>
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/netid"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/oval_text_small_angle"
+            android:ems="10"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+        <CheckBox
+            android:id="@+id/cb_auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/password"
+            android:layout_below="@+id/password"
+            android:text="@string/auto_signin"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <net.shikii.widgets.SAutoBgButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="78dp"
+            android:background="@drawable/oval_btn"
+            android:gravity="center"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:text="@string/action_sign_in_short"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <net.shikii.widgets.SAutoBgButton
+            android:id="@+id/sign_up_button"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/sign_in_button"
+            android:layout_below="@+id/sign_in_button"
+            android:layout_marginTop="74dp"
+            android:background="@drawable/oval_btn"
+            android:gravity="center"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:text="@string/sign_up_btn_text"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sign_up_hint"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/sign_up_button"
+            android:layout_below="@+id/sign_in_button"
+            android:layout_marginTop="38dp"
+            android:text="@string/sign_up_hint"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
 </merge>

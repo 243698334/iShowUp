@@ -1,6 +1,8 @@
 package com.werds.ishowup;
 
-import java.util.ArrayList;
+import info.androidhive.slidingmenu.MainActivity;
+import info.androidhive.slidingmenu.R;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,14 +11,19 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,7 +34,7 @@ import com.werds.ishowup.dbcommunication.DatabaseReader;
  * well.
  */
 public class LoginActivity extends Activity {
-	
+
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
@@ -46,20 +53,58 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
+	// For saved account data.
+	private SharedPreferences sp;
+	private CheckBox auto_login;
+
+	// Buttons
+	private Button sign_up_btn;
+	private Button sign_in_btn;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
 
-		// Set up the login form.
+		// Get instances.
 		mNetIDView = (EditText) findViewById(R.id.netid);
-		mNetIDView.setText(mNetID);
-
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mLoginFormView = findViewById(R.id.login_form);
+		mLoginStatusView = findViewById(R.id.login_status);
+		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		auto_login = (CheckBox) findViewById(R.id.cb_auto);
+		sign_up_btn = (Button) findViewById(R.id.sign_up_button);
+		sign_in_btn = (Button) findViewById(R.id.sign_in_button);
+		
+		sp = this.getSharedPreferences("userInfo", MODE_PRIVATE);
+
+		// Auto sign in ON by default.
+		/*
+		 * auto_login.setChecked(true); sp.edit().putBoolean("AUTO_CHECKED",
+		 * false).commit();
+		 */
+
+		// If last time login successfully, the VERIFIED field should be true,
+		// Then you are free to auto login. YAY!
+		if (sp.getBoolean("VERIFIED", false)
+				&& sp.getBoolean("AUTO_CHECKED", false)) {
+			// Default to be auto login.
+			auto_login.setChecked(true);
+
+			Intent main_intent = new Intent(LoginActivity.this,
+					MainActivity.class);
+			LoginActivity.this.startActivity(main_intent);
+
+		}
+
+		// Set up the login form.
+		mNetIDView.setText(mNetID);
+		mPasswordView
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
-					public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent) {
 						if (id == R.id.login || id == EditorInfo.IME_NULL) {
 							attemptLogin();
 							return true;
@@ -68,23 +113,44 @@ public class LoginActivity extends Activity {
 					}
 				});
 
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		// Set clicklistener for sign in btn.
+		sign_in_btn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				attemptLogin();
+			}
+		});
 
-		findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						attemptLogin();
-					}
-				});
-	}
+		// Set clicklistener for sign up btn.
+		/*
+		 * final Intent signup_intent = new Intent();
+		 * signup_intent.setAction("android.intent.action.VIEW"); Uri
+		 * content_url = Uri
+		 * .parse("http://web.engr.illinois.edu/~ishowup4cs411/register.php");
+		 * signup_intent.setData(content_url);
+		 * 
+		 * sign_up_btn.setOnClickListener( new Button.OnClickListener() { public
+		 * void onClick(View v) { startActivity(signup_intent); } });
+		 */
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
+		
+		sign_up_btn.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+			}
+		});
+
+		// Set Checkbox listener
+		auto_login.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (auto_login.isChecked()) {
+					sp.edit().putBoolean("AUTO_CHECKED", true).commit();
+				} else {
+					sp.edit().putBoolean("AUTO_CHECKED", false).commit();
+				}
+			}
+		});
 	}
 
 	/**
@@ -192,17 +258,18 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		/**
 		 * This login process runs on a separate thread.
+		 * 
 		 * @author KevinC
 		 */
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			Map<String, String> parameters = new HashMap<String, String>();
-			parameters.put("netid", mNetID);
-			parameters.put("password", mPassword);
+            parameters.put("netid", mNetID);
+            parameters.put("password", mPassword);
 
-			DatabaseReader login = new DatabaseReader(DATABASE_LOGIN_PHP);
-			String loginStatus = new String(login.performRead(parameters));
-			return loginStatus.equals("Accept\n");
+            DatabaseReader login = new DatabaseReader(DATABASE_LOGIN_PHP);
+            String loginStatus = new String(login.performRead(parameters));
+            return loginStatus.equals("Accept\n");
 		}
 
 		@Override
@@ -211,8 +278,10 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class)); 
-				// Should better use intent. (use putExtra() to share login status)
+				startActivity(new Intent(LoginActivity.this, MainActivity.class));
+				// Should better use intent. (use putExtra() to share login
+				// status)
+				sp.edit().putBoolean("VERIFIED", true).commit();
 				finish(); // What to do if login successfully
 			} else {
 				mPasswordView
@@ -227,4 +296,5 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 		}
 	}
+
 }

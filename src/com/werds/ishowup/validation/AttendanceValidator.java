@@ -1,44 +1,42 @@
 package com.werds.ishowup.validation;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 
-import com.werds.ishowup.course.TodaysClass;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
 public class AttendanceValidator extends Service {
 
+	private String netID;
 	private String qrCodeData;
 	
+	private String crnFromQR;
+	private String secretKeyFromQR;
+
 	private double latitude;
 	private double longitude;
 	private long epochTime;
-	private String secretKey;
-		
-	// The URL for the PHP script to fetch the secret key.
-	private static final String DATABASE_SECRETKEY_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/secretkey.php";
-	// The tolerance of the time difference in seconds between the generation and validation of the QR code.
-	private static final double TIME_DIFFERENCE_TOLERANCE = 300;
-	// The tolerance of the distance difference in percentage between the building and the user's location. 
-	private static final double LOCATION_DIFFERENCE_TOLERANCE = 0.01;
 	
-	public enum Status {
-		SUCCESS, FAILED_LOCATION, FAILED_TIME, FAILED_SECRETKEY, 
-		FAILED_LOCATION_TIME, FAILED_LOCATION_SECRETFAILED_BOTH
-	}
+	// The URL for the PHP script to validate check-in process. 
+	private static final String VALIDATOR_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/validate.php";
+	// The URL for the PHP script to fetch the student info. 
+	private static final String STUDENTINFO_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/studentinfo.php";
 	
-	public AttendanceValidator(String qrCodeData) throws IOException {
+	public AttendanceValidator(String netID, String qrCodeData) {
+		this.netID = new String(netID);
 		this.qrCodeData = new String(qrCodeData);
-		// StrictMode.enableDefaults();
+		
+		/** Test **/
+		this.crnFromQR = "31602";
+		this.secretKeyFromQR = "test";
 	}
 	
 	private void fetchLocation() {
@@ -51,45 +49,104 @@ public class AttendanceValidator extends Service {
 		}
 	}
 	
+	private String getDeviceID() {
+		return "test_device_id";
+	}
+	
+	
 	private void fetchEpochTime() {
 		this.epochTime = System.currentTimeMillis() / 1000;
 	}
 	
-	private void fetchSecretKey(String crn, long qrCodeGenerateEpochTime) {
-		/*Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy");
-		String todaysDate = sdf.format(cal.getTime());
-		// For testing purpose, manually set todaysDate to be the ones needed.
-		todaysDate = "11062013";*/
+	/**
+	 * Validate the Check-in process.
+	 * @return 
+	 * @throws JSONException 
+	 */
+	public String validateCheckIn() throws JSONException {
+		JSONObject qrCodeJSON = new JSONObject(this.qrCodeData);
+		this.crnFromQR = qrCodeJSON.getString("CRN");
+		this.secretKeyFromQR = qrCodeJSON.getString("SecretKey");
 		
-		SimpleDateFormat sdfDate = new SimpleDateFormat("MMddyyyy");
-		String dateOfClass = sdfDate.format(new Date(qrCodeGenerateEpochTime));
-		
-		ArrayList<String> parameters = new ArrayList<String>();
-		parameters.add("crn");
-		parameters.add("date");
-		ArrayList<String> values = new ArrayList<String>();
-		values.add(crn);
-		values.add(dateOfClass);
-		
-		FetchSecretKeyTask mFetch = new FetchSecretKeyTask();
+		String status = null;
+		Map<String, String> parameters= new HashMap<String, String>();
+		parameters.put("netID", netID);
+		parameters.put("crn", crnFromQR);
+		parameters.put("secretkey", secretKeyFromQR);
+		parameters.put("latitude", Double.toString(latitude));
+		parameters.put("longitude", Double.toString(longitude));
+		parameters.put("deviceid", getDeviceID());
+		ValidateCheckInTask mFetch = new ValidateCheckInTask();
 		try {
-			this.secretKey = new String(mFetch.execute(parameters, values).get());
+			status = mFetch.execute(parameters).get();
 		} catch (Exception e) {
-			this.secretKey = null;
+			status = null;
 		}
+		return status;
 	}
 	
-	public class FetchSecretKeyTask extends AsyncTask<ArrayList<String>, Void, String> {
+	private class ValidateCheckInTask extends AsyncTask<Map<String, String>, Void, String> {
 
 		@Override
-		protected String doInBackground(ArrayList<String>... arrLists) {
-			ArrayList<String> parameters = arrLists[0];
-			ArrayList<String> values = arrLists[1];
+		protected String doInBackground(Map<String, String>... arg) {
+			Map<String, String> parameters = arg[0];
+			DatabaseReader validateCheckIn = new DatabaseReader(VALIDATOR_URL);
+			String status = validateCheckIn.performRead(parameters);
+			return status;
+		}
+		
+	}
+	
+	
+	/**
+	 * @return a String array. Index 0: NetID. 
+	 * 						   Index 1: Last Name
+	 * 						   Index 2: First Name
+	 *                         Index 3: Total sections count
+	 *                         Index 4: Attended sections count
+	 * @throws JSONException 
+	 * 
+	 */
+	public String[] fetchStudentInfo() throws JSONException {
+		String[] studentInfo = null;
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("netid", netID);
+		parameters.put("crn", "31602");
+		FetchStudentInfoTask mFetch = new FetchStudentInfoTask();
+		try {
+			studentInfo = mFetch.execute(parameters).get();
+		} catch (Exception e) {
+			studentInfo = null;
+		}
+		return studentInfo;
+	}
+	
+	private class FetchStudentInfoTask extends AsyncTask<Map<String, String>, Void, String[]> {
+
+		@Override
+		protected String[] doInBackground(Map<String, String>... arg) {
+			Map<String, String> parameters = arg[0];
 			
-			DatabaseReader secretKeyFetcher = new DatabaseReader(DATABASE_SECRETKEY_URL);
-			//return secretKeyFetcher.fetchDataByString(parameters, values);
-			return null;
+			String[] studentInfo = new String[5];
+			for (int i = 0; i < studentInfo.length; i++) {
+				studentInfo[i] = null;
+			}
+			DatabaseReader studentInfoFetcher = new DatabaseReader(STUDENTINFO_URL);
+			String studentInfoRaw = studentInfoFetcher.performRead(parameters);
+			JSONObject studentInfoJSON;
+			String lastName = null, firstName = null, totalCount = null, attendCount = null;
+			try {
+				studentInfoJSON = new JSONObject(studentInfoRaw);
+				studentInfo[0] = new String(netID);
+				studentInfo[1] = studentInfoJSON.getString("LastName");
+				studentInfo[2] = studentInfoJSON.getString("firstName");
+				studentInfo[3] = studentInfoJSON.getString("totalCount");
+				studentInfo[4] = studentInfoJSON.getString("attenCount");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return studentInfo;
 		}
 	}
 	
@@ -102,7 +159,7 @@ public class AttendanceValidator extends Service {
 	 * @return null if QR Code is not JSON formatted
 	 * @throws JSONException
 	 */
-	public boolean[] validate() throws JSONException {
+	/*public boolean[] validate() throws JSONException {
 		boolean[] status = new boolean[5];
 		for (int i = 0; i < status.length; i++) {
 			status[i] = false;
@@ -138,7 +195,7 @@ public class AttendanceValidator extends Service {
 		// Check overall	
 		status[0] = status[1] && status[2] && status[3] && status[4];
 		return status;
-	}
+	}*/
 
 	@Override
 	public IBinder onBind(Intent intent) {

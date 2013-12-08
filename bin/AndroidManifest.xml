@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.werds.ishowup"
+    package="info.androidhive.slidingmenu"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,26 +16,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.werds.ishowup.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.werds.ishowup.ScanActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_scan"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.werds.ishowup.TestActivity"
-            android:label="@string/title_activity_test" >
-        </activity>
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <activity
             android:name="com.werds.ishowup.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:label="@string/app_name"
             android:noHistory="true"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,8 +29,39 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.werds.ishowup.ScanActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_scan"
+            android:parentActivityName="info.androidhive.slidingmenu.MainActivity" >
+
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="info.androidhive.slidingmenu.MainActivity" />
+        </activity>
+        <activity
             android:name="com.werds.ishowup.ValidateActivity"
-            android:label="@string/title_activity_validate" >
+            android:label="@string/title_activity_validate"
+            android:parentActivityName="info.androidhive.slidingmenu.MainActivity" >
+
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="info.androidhive.slidingmenu.MainActivity" />
+        </activity>
+        <activity
+            android:name="info.androidhive.slidingmenu.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.werds.ishowup.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:parentActivityName="com.werds.ishowup.LoginActivity" >
+
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.werds.ishowup.LoginActivity" />
         </activity>
     </application>
 

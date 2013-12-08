@@ -1,5 +1,6 @@
 package com.werds.ishowup;
 
+import info.androidhive.slidingmenu.R;
 import net.sourceforge.zbar.CameraPreview;
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -15,7 +16,10 @@ import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 public class ScanActivity extends Activity {
@@ -35,8 +39,8 @@ public class ScanActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_scan);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -60,10 +64,14 @@ public class ScanActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.validate, menu);
-		return true;
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		// Respond to the action bar's Up/Home button
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/** A safe way to get an instance of the Camera object. */
@@ -109,8 +117,9 @@ public class ScanActivity extends Activity {
 
 				SymbolSet syms = scanner.getResults();
 				for (Symbol sym : syms) {
-					String qrCodeData = sym.getData(); 
-					Intent intent = new Intent(ScanActivity.this, ValidateActivity.class);
+					String qrCodeData = sym.getData();
+					Intent intent = new Intent(ScanActivity.this,
+							ValidateActivity.class);
 					intent.putExtra("QRCodeData", qrCodeData);
 					startActivity(intent);
 				}
