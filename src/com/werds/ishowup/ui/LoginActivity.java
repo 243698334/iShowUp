@@ -273,27 +273,30 @@ public class LoginActivity extends Activity {
 		protected Boolean doInBackground(Void... params) {
 			Map<String, String> parameters = new HashMap<String, String>();
             parameters.put("netid", mNetID);
+            Log.d("Login NetID", mNetID);
             parameters.put("password", mPassword);
             DatabaseReader login = new DatabaseReader(DATABASE_LOGIN_PHP);
             String loginStatus = new String(login.performRead(parameters));
             if (loginStatus.equals("Accept\n")) {
+            	sp.edit().putString("NetID", mNetID).commit();
             	Map<String, String> sectionLookupParam = new HashMap<String, String>();
-                parameters.put("netid", mNetID);
-                parameters.put("operation", "lookup");
+            	sectionLookupParam.put("netid", mNetID);
+            	sectionLookupParam.put("operation", "lookup");
 
                 DatabaseReader sectionLookUp = new DatabaseReader(SIGNUP_PHP);
                 String sectionLookUpInfo = new String(sectionLookUp.performRead(sectionLookupParam));
+                Log.d("sectionLookupInfo", sectionLookUpInfo);
                 try {
                 	JSONObject signUpInfoJson = new JSONObject(sectionLookUpInfo);
                 	String signUpStatus = signUpInfoJson.getString("Status");
-                	String firstName = signUpInfoJson.getString("FirstName");
                 	if (signUpStatus.equals("VALID")) {
                     	// Store all sections found for this student
+                		String firstName = signUpInfoJson.getString("FirstName");
                 		JSONArray sections = signUpInfoJson.getJSONArray("Sections");
                 		Set<String> allSections = new HashSet<String>();
                 		for (int i = 0; i < sections.length(); i++) {
                 			allSections.add(sections.getString(i).replace('_', ' '));
-                			//Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
+                			Log.d(mNetID + "'s section"+i, sections.getString(i).replace('_', ' '));
                 		}
                 		sp.edit().putStringSet("allSections", allSections).commit();
                 		sp.edit().putString("FirstName", firstName).commit();;

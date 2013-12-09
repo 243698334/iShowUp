@@ -1,7 +1,5 @@
 package com.werds.ishowup.ui;
 
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import com.werds.ishowup.validation.AttendanceValidator;
 public class ValidateActivity extends Activity {
 
 	private SharedPreferences sp;
-	private ImageView icon;
 	private TextView text;
 	private String netID;
 

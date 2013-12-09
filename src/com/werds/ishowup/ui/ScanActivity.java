@@ -1,7 +1,5 @@
 package com.werds.ishowup.ui;
 
-import com.werds.ishowup.R;
-
 import net.sourceforge.zbar.CameraPreview;
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -18,10 +16,10 @@ import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.FrameLayout;
+
+import com.werds.ishowup.R;
 
 public class ScanActivity extends Activity {
 
