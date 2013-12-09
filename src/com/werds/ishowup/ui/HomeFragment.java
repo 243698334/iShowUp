@@ -26,9 +26,9 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mkyong.android.adapter.ImageAdapter;
 import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
+import com.werds.ishowup.ui.adapter.GridCardAdapter;
 
 public class HomeFragment extends Fragment {
 
@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
 		/******************* GridView *******************/
 		gridView = (GridView) rootView.findViewById(R.id.gridview1);
 
-		gridView.setAdapter(new ImageAdapter(getActivity(), course,
+		gridView.setAdapter(new GridCardAdapter(getActivity(), course,
 				section, status));
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {

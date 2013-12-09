@@ -1,10 +1,10 @@
-package com.mkyong.android.adapter;
+package com.werds.ishowup.ui.adapter;
 
+
+import info.androidhive.slidingmenu.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.werds.ishowup.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ImageAdapter extends BaseAdapter {
+public class GridCardAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<String> courseList;
 	private ArrayList<String> sectionList;
@@ -23,7 +23,7 @@ public class ImageAdapter extends BaseAdapter {
 	private ImageView imageView;
 	private HashMap<String, Integer> map;
 
-	public ImageAdapter(Context context, ArrayList<String> courseList,
+	public GridCardAdapter(Context context, ArrayList<String> courseList,
 			ArrayList<String> sectionList, ArrayList<String> statusList) {
 		this.context = context;
 		this.courseList = courseList;
@@ -43,13 +43,13 @@ public class ImageAdapter extends BaseAdapter {
 			gridView = new View(context);
 
 			// get layout from mobile.xml
-			gridView = inflater.inflate(R.layout.course, null);
+			gridView = inflater.inflate(R.layout.grid_card, null);
 
 			// set value into textview
 			
-			course = (TextView) gridView.findViewById(R.id.course_no);
-			section = (TextView) gridView.findViewById(R.id.course_title);
-			status = (TextView) gridView.findViewById(R.id.instructor);
+			course = (TextView) gridView.findViewById(R.id.course);
+			section = (TextView) gridView.findViewById(R.id.section);
+			status = (TextView) gridView.findViewById(R.id.status);
 
 			course.setText(courseList.get(position));
 			section.setText(sectionList.get(position));

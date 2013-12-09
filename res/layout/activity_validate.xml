@@ -2,23 +2,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/main_bg"
     tools:context=".ValidateActivity" >
 
     <ImageView
-        android:id="@+id/icon_status"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp" />
+        android:id="@+id/checkin_status"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
 
     <TextView
-        android:id="@+id/status_text"
+        android:id="@+id/hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/bug_if_appear"
-        android:textSize="20sp" />
+        android:layout_marginTop="200dp"
+        android:text="Hello FIRST NAME"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/you_have"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/course_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="you have successfully checked in to"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/course_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/return_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="CS XXX X!"
+        android:textSize="25sp" />
+
+    <net.shikii.widgets.SAutoBgButton
+        android:id="@+id/return_btn"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/oval_btn"
+        android:text="OK" />
 
 </RelativeLayout>
