@@ -281,6 +281,7 @@ public class LoginActivity extends Activity {
 				// Should better use intent. (use putExtra() to share login
 				// status)
 				sp.edit().putBoolean("VERIFIED", true).commit();
+				sp.edit().putString("NetID", mNetID).commit();
 				finish(); // What to do if login successfully
 			} else {
 				mPasswordView

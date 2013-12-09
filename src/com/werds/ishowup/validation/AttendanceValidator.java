@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.telephony.TelephonyManager;
 
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
@@ -33,10 +35,6 @@ public class AttendanceValidator extends Service {
 	public AttendanceValidator(String netID, String qrCodeData) {
 		this.netID = new String(netID);
 		this.qrCodeData = new String(qrCodeData);
-		
-		/** Test **/
-		this.crnFromQR = "31602";
-		this.secretKeyFromQR = "test";
 	}
 	
 	private void fetchLocation() {
@@ -50,7 +48,8 @@ public class AttendanceValidator extends Service {
 	}
 	
 	private String getDeviceID() {
-		return "test_device_id";
+		TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		return telephonyManager.getDeviceId();
 	}
 	
 	
@@ -63,24 +62,32 @@ public class AttendanceValidator extends Service {
 	 * @return 
 	 * @throws JSONException 
 	 */
-	public String validateCheckIn() throws JSONException {
-		JSONObject qrCodeJSON = new JSONObject(this.qrCodeData);
-		this.crnFromQR = qrCodeJSON.getString("CRN");
-		this.secretKeyFromQR = qrCodeJSON.getString("SecretKey");
+	public String validateCheckIn() {
+		JSONObject qrCodeJson = null;
+		try {
+			qrCodeJson = new JSONObject(this.qrCodeData);
+			this.crnFromQR = qrCodeJson.getString("CRN");
+			this.secretKeyFromQR = qrCodeJson.getString("SecretKey");
+		} catch (JSONException e) {
+			return "INVALID_QRCODE";
+		}
 		
 		String status = null;
 		Map<String, String> parameters= new HashMap<String, String>();
-		parameters.put("netID", netID);
+		parameters.put("netid", netID);
 		parameters.put("crn", crnFromQR);
 		parameters.put("secretkey", secretKeyFromQR);
 		parameters.put("latitude", Double.toString(latitude));
 		parameters.put("longitude", Double.toString(longitude));
 		parameters.put("deviceid", getDeviceID());
-		ValidateCheckInTask mFetch = new ValidateCheckInTask();
+		ValidateCheckInTask mValidate = new ValidateCheckInTask();
 		try {
-			status = mFetch.execute(parameters).get();
+			status = mValidate.execute(parameters).get();
 		} catch (Exception e) {
 			status = null;
+		}
+		if (status.indexOf("INVALID_SECRETKEY") != -1) {
+			return secretKeyFromQR;
 		}
 		return status;
 	}

@@ -18,6 +18,7 @@ public class ValidateActivity extends Activity {
 	private SharedPreferences sp;
 	private ImageView icon;
 	private TextView text;
+	private String netID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class ValidateActivity extends Activity {
 		//icon = (ImageView) findViewById(R.id.icon_status);
 		text = (TextView) findViewById(R.id.status_text);
 		sp = this.getSharedPreferences("userInfo", MODE_PRIVATE);
+		netID = sp.getString("NetID", null);
 		
 		/******************* UNCOMMENT AFTER TEST *******************/
 		Bundle bundle = getIntent().getExtras();
@@ -46,13 +48,8 @@ public class ValidateActivity extends Activity {
 			text.setText(R.string.validate_fail);
 		}
 		
-		AttendanceValidator validator = new AttendanceValidator("cerdoga2", "qrCodeData");
-		try {
-			text.setText(validator.validateCheckIn());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		AttendanceValidator validator = new AttendanceValidator(netID, qrCodeData);
+		text.setText(validator.validateCheckIn());
 
 	}
 	
