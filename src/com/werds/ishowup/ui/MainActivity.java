@@ -1,6 +1,5 @@
 package com.werds.ishowup.ui;
 
-import info.androidhive.slidingmenu.R;
 
 import java.util.ArrayList;
 
@@ -20,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.ui.adapter.NavDrawerListAdapter;
 import com.werds.ishowup.ui.model.NavDrawerItem;
 

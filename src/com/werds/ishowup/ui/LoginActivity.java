@@ -1,9 +1,14 @@
 package com.werds.ishowup.ui;
 
-import info.androidhive.slidingmenu.R;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -15,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -26,6 +32,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
 /**
@@ -41,6 +48,8 @@ public class LoginActivity extends Activity {
 
 	/* Login php of the database server */
 	private static final String DATABASE_LOGIN_PHP = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/login.php";
+	private static final String SIGNUP_PHP = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/register.php";
+
 
 	private String mNetID;
 	private String mPassword;
@@ -265,10 +274,36 @@ public class LoginActivity extends Activity {
 			Map<String, String> parameters = new HashMap<String, String>();
             parameters.put("netid", mNetID);
             parameters.put("password", mPassword);
-
             DatabaseReader login = new DatabaseReader(DATABASE_LOGIN_PHP);
             String loginStatus = new String(login.performRead(parameters));
-            return loginStatus.equals("Accept\n");
+            if (loginStatus.equals("Accept\n")) {
+            	Map<String, String> sectionLookupParam = new HashMap<String, String>();
+                parameters.put("netid", mNetID);
+                parameters.put("operation", "lookup");
+
+                DatabaseReader sectionLookUp = new DatabaseReader(SIGNUP_PHP);
+                String sectionLookUpInfo = new String(sectionLookUp.performRead(parameters));
+                try {
+                	JSONObject signUpInfoJson = new JSONObject(sectionLookUpInfo);
+                	String signUpStatus = signUpInfoJson.getString("Status");
+                	String firstName = signUpInfoJson.getString("FirstName");
+                	if (signUpStatus.equals("VALID")) {
+                    	// Store all sections found for this student
+                		JSONArray sections = signUpInfoJson.getJSONArray("Sections");
+                		Set<String> allSections = new HashSet<String>();
+                		for (int i = 0; i < sections.length(); i++) {
+                			allSections.add(sections.getString(i).replace('_', ' '));
+                			//Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
+                		}
+                		sp.edit().putStringSet("allSections", allSections).commit();
+                		sp.edit().putString("FirstName", firstName).commit();;
+                		return true;
+                    } else 
+                    	return true;
+                } catch (JSONException e) {
+                	return true;
+                }
+            } else return false;
 		}
 
 		@Override

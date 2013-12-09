@@ -2,7 +2,6 @@ package com.werds.ishowup.ui;
 
 import org.json.JSONException;
 
-import info.androidhive.slidingmenu.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.validation.AttendanceValidator;
 
 public class ValidateActivity extends Activity {

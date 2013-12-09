@@ -1,9 +1,10 @@
 package com.mkyong.android.adapter;
 
-import info.androidhive.slidingmenu.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.werds.ishowup.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

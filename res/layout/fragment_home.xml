@@ -5,8 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <TextView
+        android:id="@+id/greeting"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="  Greeting" 
+        android:textSize="23sp" />
+        "
     <GridView
         android:id="@+id/gridview1"
+        android:layout_below="@+id/greeting"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="60dp"
@@ -24,7 +34,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/scan_btn"
-        android:text="Scan"
+        android:text="Scan QRCode to check-in"
         android:textColor="@color/white"
         android:textStyle="bold" />
 

@@ -1,6 +1,7 @@
 package com.werds.ishowup.ui;
 
-import info.androidhive.slidingmenu.R;
+import com.werds.ishowup.R;
+
 import net.sourceforge.zbar.CameraPreview;
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;

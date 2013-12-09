@@ -1,10 +1,14 @@
 package com.werds.ishowup.ui;
 
-import info.androidhive.slidingmenu.R;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,17 +20,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
 /**
@@ -41,7 +44,7 @@ public class SignUpActivity extends Activity {
 	private UserLoginTask mAuthTask = null;
 
 	/* Login php of the database server */
-	private static final String SIGNUP_PHP = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/login.php";
+	private static final String SIGNUP_PHP = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/register.php";
 
 	private String mNetID;
 	private String mPassword;
@@ -138,8 +141,8 @@ public class SignUpActivity extends Activity {
 			focusView = mNetIDView;
 			cancel = true;
 		} else if (!validateNetID(mNetID)) {
-			mNetIDView.setError("Please use your real NetID.");
-			// FIXME
+			mNetIDView.setError("Please use your real NetID");
+			// FIXME hard coding.
 			focusView = mNetIDView;
 			cancel = true;
 		} 
@@ -159,15 +162,15 @@ public class SignUpActivity extends Activity {
 	}
 
 	private boolean validateNetID(String netID) {
-		ValidateNetID validator = new ValidateNetID();
+		ValidateNetIDTask validator = new ValidateNetIDTask();
 		try {
-			return validator.execute().get();
+			return validator.execute().get().booleanValue();
 		} catch (Exception e) {
 			return false;
 		} 
 	}
 	
-	public class ValidateNetID extends AsyncTask<Void, Void, Boolean> {
+	public class ValidateNetIDTask extends AsyncTask<Void, Void, Boolean> {
 		
 		@Override
 		protected Boolean doInBackground(Void... params) {
@@ -175,9 +178,14 @@ public class SignUpActivity extends Activity {
             parameters.put("netid", mNetID);
             parameters.put("operation", "lookup");
 
-            DatabaseReader login = new DatabaseReader(SIGNUP_PHP);
-            String loginStatus = new String(login.performRead(parameters));
-            return loginStatus.indexOf("INVALID_NETID") == -1 ? true : false;
+            DatabaseReader lookup = new DatabaseReader(SIGNUP_PHP);
+            try {
+            	JSONObject lookupStatusJson = new JSONObject(lookup.performRead(parameters));
+				String lookupStatus = lookupStatusJson.getString("Status");
+				return lookupStatus.equals("VALID");
+			} catch (JSONException e) {
+				return false;
+			}
 		}
 	}
 
@@ -239,9 +247,29 @@ public class SignUpActivity extends Activity {
             parameters.put("netid", mNetID);
             parameters.put("password", mPassword);
 
-            DatabaseReader login = new DatabaseReader(SIGNUP_PHP);
-            String loginStatus = new String(login.performRead(parameters));
-            return loginStatus.equals("SUCCESS\n");
+            DatabaseReader signUp = new DatabaseReader(SIGNUP_PHP);
+            String signUpInfo = new String(signUp.performRead(parameters));
+            try {
+            	JSONObject signUpInfoJson = new JSONObject(signUpInfo);
+            	String signUpStatus = signUpInfoJson.getString("Status");
+            	String firstName = signUpInfoJson.getString("FirstName");
+            	if (signUpStatus.equals("SUCCESS")) {
+                	// Store all sections found for this student
+            		JSONArray sections = signUpInfoJson.getJSONArray("Sections");
+            		Set<String> allSections = new HashSet<String>();
+            		for (int i = 0; i < sections.length(); i++) {
+            			allSections.add(sections.getString(i).replace('_', ' '));
+            			Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
+            		}
+            		sp.edit().putStringSet("allSections", allSections).commit();
+            		sp.edit().putString("FirstName", firstName).commit();;
+            		return true;
+                } else 
+                	return false;
+            } catch (JSONException e) {
+            	return false;
+            }
+            
 		}
 
 		@Override
