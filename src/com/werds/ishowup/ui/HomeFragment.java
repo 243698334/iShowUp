@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
 			String currSection = currStrRaw.substring(currStrRaw.lastIndexOf(' ') + 1);
 			String currStatus = checkInStatus(currStrRaw);
 			
-			if (currStatus.equals("GO_HEAD")) {
+			if (currStatus.equals("GO_AHEAD")) {
 				status.add("Go ahead and check-in!");
 			} else if (currStatus.equals("NOT_READY")) {
 				status.add("Not ready for check-in");

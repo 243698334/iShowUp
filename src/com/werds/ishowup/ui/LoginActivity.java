@@ -282,7 +282,7 @@ public class LoginActivity extends Activity {
                 parameters.put("operation", "lookup");
 
                 DatabaseReader sectionLookUp = new DatabaseReader(SIGNUP_PHP);
-                String sectionLookUpInfo = new String(sectionLookUp.performRead(parameters));
+                String sectionLookUpInfo = new String(sectionLookUp.performRead(sectionLookupParam));
                 try {
                 	JSONObject signUpInfoJson = new JSONObject(sectionLookUpInfo);
                 	String signUpStatus = signUpInfoJson.getString("Status");

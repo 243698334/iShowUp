@@ -16,19 +16,19 @@ import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<String> courseNoList;
-	private ArrayList<String> courseTitleList;
-	private ArrayList<String> instructorList;
-	private TextView courseNo, courseTitle, instructor;
+	private ArrayList<String> courseList;
+	private ArrayList<String> sectionList;
+	private ArrayList<String> statusList;
+	private TextView course, section, status;
 	private ImageView imageView;
 	private HashMap<String, Integer> map;
 
-	public ImageAdapter(Context context, ArrayList<String> courseNoList,
-			ArrayList<String> courseTitleList, ArrayList<String> instructorList) {
+	public ImageAdapter(Context context, ArrayList<String> courseList,
+			ArrayList<String> sectionList, ArrayList<String> statusList) {
 		this.context = context;
-		this.courseNoList = courseNoList;
-		this.courseTitleList = courseTitleList;
-		this.instructorList = instructorList;
+		this.courseList = courseList;
+		this.sectionList = sectionList;
+		this.statusList = statusList;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -46,13 +46,14 @@ public class ImageAdapter extends BaseAdapter {
 			gridView = inflater.inflate(R.layout.course, null);
 
 			// set value into textview
-			courseNo = (TextView) gridView.findViewById(R.id.course_no);
-			courseTitle = (TextView) gridView.findViewById(R.id.course_title);
-			instructor = (TextView) gridView.findViewById(R.id.instructor);
+			
+			course = (TextView) gridView.findViewById(R.id.course_no);
+			section = (TextView) gridView.findViewById(R.id.course_title);
+			status = (TextView) gridView.findViewById(R.id.instructor);
 
-			courseNo.setText(courseNoList.get(position));
-			courseTitle.setText(courseTitleList.get(position));
-			instructor.setText(instructorList.get(position));
+			course.setText(courseList.get(position));
+			section.setText(sectionList.get(position));
+			status.setText(statusList.get(position));
 
 			// set image based on selected text
 			imageView = (ImageView) gridView.findViewById(R.id.courseicon);
@@ -97,7 +98,10 @@ public class ImageAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return courseNoList.size();
+		//int count = courseList.size() - 1;
+		//return count >= 0 ? count : 0;
+		//return Math.min(courseList.size(), Math.min(sectionList.size(), statusList.size()))courseList.size();
+		return courseList.size();
 	}
 
 	@Override
