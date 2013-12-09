@@ -48,10 +48,9 @@ public class AttendanceValidator extends Service {
 	}
 	
 	private String getDeviceID() {
-		//return "kevins-macbook-pro";
-		TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-		return telephonyManager.getDeviceId();
-		//return "kevins-macbook-pro";
+		//TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		//return telephonyManager.getDeviceId();
+		return "kevins-macbook-pro";
 	}
 	
 	

@@ -24,7 +24,7 @@ public class ChatFragment extends Fragment {
 
 		chat_page = (WebView) rootView.findViewById(R.id.chat_page);
 
-		chat_page.loadUrl("http://www.google.com");
+		chat_page.loadUrl("http://web.engr.illinois.edu/~ishowup4cs411/chat.php");
 
 		return rootView;
 	}
