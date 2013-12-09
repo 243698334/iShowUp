@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <Button
+    <GridView
+        android:id="@+id/gridview1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="60dp"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp" />
+
+    <net.shikii.widgets.SAutoBgButton
         android:id="@+id/scan_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="23dp"
-        android:text="Scan" />
-
-    <Button
-        android:id="@+id/suc_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scan_btn"
-        android:layout_centerHorizontal="true"
-        android:text="success" />
-
-    <Button
-        android:id="@+id/fail_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/scan_btn"
-        android:layout_below="@+id/suc_btn"
-        android:layout_marginTop="22dp"
-        android:text="fail" />
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/scan_btn"
+        android:text="Scan"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </RelativeLayout>

@@ -4,11 +4,7 @@ import info.androidhive.slidingmenu.R;
 
 import java.util.ArrayList;
 
-import com.werds.ishowup.ui.adapter.NavDrawerListAdapter;
-import com.werds.ishowup.ui.model.NavDrawerItem;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -23,6 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.werds.ishowup.ui.adapter.NavDrawerListAdapter;
+import com.werds.ishowup.ui.model.NavDrawerItem;
 
 public class MainActivity extends Activity {
 	public static final int HOME = 0;
@@ -78,7 +77,7 @@ public class MainActivity extends Activity {
 		// Home
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1), true, "26"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1), true, "2"));
 		// Photos
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// Communities, Will add a counter here
@@ -95,8 +94,7 @@ public class MainActivity extends Activity {
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the nav drawer list adapter
-		adapter = new NavDrawerListAdapter(getApplicationContext(),
-				navDrawerItems);
+		adapter = new NavDrawerListAdapter(getApplicationContext(),navDrawerItems);
 		mDrawerList.setAdapter(adapter);
 
 		// enabling action bar app icon and behaving it as toggle button
