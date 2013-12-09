@@ -30,7 +30,7 @@ public class AttendanceValidator extends Service {
 	// The URL for the PHP script to validate check-in process. 
 	private static final String VALIDATOR_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/validate.php";
 	// The URL for the PHP script to fetch the student info. 
-	private static final String STUDENTINFO_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/studentinfo.php";
+	private static final String CHECKININFO_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/studentinfo.php";
 	
 	public AttendanceValidator(String netID, String qrCodeData) {
 		this.netID = new String(netID);
@@ -112,15 +112,16 @@ public class AttendanceValidator extends Service {
 	 * 						   Index 2: First Name
 	 *                         Index 3: Total sections count
 	 *                         Index 4: Attended sections count
+	 *                         Index 5: Section display name
 	 * @throws JSONException 
 	 * 
 	 */
-	public String[] fetchStudentInfo() throws JSONException {
+	public String[] fetchCheckInInfo() throws JSONException {
 		String[] studentInfo = null;
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("netid", netID);
 		parameters.put("crn", "31602");
-		FetchStudentInfoTask mFetch = new FetchStudentInfoTask();
+		FetchCheckInInfoTask mFetch = new FetchCheckInInfoTask();
 		try {
 			studentInfo = mFetch.execute(parameters).get();
 		} catch (Exception e) {
@@ -129,32 +130,33 @@ public class AttendanceValidator extends Service {
 		return studentInfo;
 	}
 	
-	private class FetchStudentInfoTask extends AsyncTask<Map<String, String>, Void, String[]> {
+	private class FetchCheckInInfoTask extends AsyncTask<Map<String, String>, Void, String[]> {
 
 		@Override
 		protected String[] doInBackground(Map<String, String>... arg) {
 			Map<String, String> parameters = arg[0];
 			
-			String[] studentInfo = new String[5];
-			for (int i = 0; i < studentInfo.length; i++) {
-				studentInfo[i] = null;
+			String[] checkInInfo = new String[6];
+			for (int i = 0; i < checkInInfo.length; i++) {
+				checkInInfo[i] = null;
 			}
-			DatabaseReader studentInfoFetcher = new DatabaseReader(STUDENTINFO_URL);
+			DatabaseReader studentInfoFetcher = new DatabaseReader(CHECKININFO_URL);
 			String studentInfoRaw = studentInfoFetcher.performRead(parameters);
-			JSONObject studentInfoJSON;
+			JSONObject checkInInfoJSON;
 			String lastName = null, firstName = null, totalCount = null, attendCount = null;
 			try {
-				studentInfoJSON = new JSONObject(studentInfoRaw);
-				studentInfo[0] = new String(netID);
-				studentInfo[1] = studentInfoJSON.getString("LastName");
-				studentInfo[2] = studentInfoJSON.getString("firstName");
-				studentInfo[3] = studentInfoJSON.getString("totalCount");
-				studentInfo[4] = studentInfoJSON.getString("attenCount");
+				checkInInfoJSON = new JSONObject(studentInfoRaw);
+				checkInInfo[0] = new String(netID);
+				checkInInfo[1] = checkInInfoJSON.getString("LastName");
+				checkInInfo[2] = checkInInfoJSON.getString("FirstName");
+				checkInInfo[3] = checkInInfoJSON.getString("totalCount");
+				checkInInfo[4] = checkInInfoJSON.getString("attenCount");
+				checkInInfo[5] = checkInInfoJSON.getString("SectionName");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return studentInfo;
+			return checkInInfo;
 		}
 	}
 	
