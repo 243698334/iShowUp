@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.werds.ishowup.R;
+import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 import com.werds.ishowup.ui.adapter.GridCardAdapter;
 
@@ -35,6 +36,8 @@ public class HomeFragment extends Fragment {
 	public HomeFragment() {
 	}
 
+	private final String CHECKIN_STATUS_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/checkinstatus.php";
+	
 	private Button scan_btn;
 	private TextView greeting;
 
@@ -53,39 +56,24 @@ public class HomeFragment extends Fragment {
 	ArrayList<String> course = new ArrayList<String>();
 	ArrayList<String> section = new ArrayList<String>();
 	ArrayList<String> status = new ArrayList<String>();
-
-
+	
 	/**
 	 * @return String GO_HEAD, NOT_READY, ALREADY_CHECKED_IN
 	 */
 	private String checkInStatus(String sectionFullName) {
 		sectionFullName = sectionFullName.replace(' ', '_');
-		CheckInStatusTask checkInStatus = new CheckInStatusTask();
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("netid", netID);
+		parameters.put("sectionfullname", sectionFullName);
+		DatabaseCommunicator checkInStatusReader = new DatabaseCommunicator(CHECKIN_STATUS_URL);
+		String checkInStatusRaw = checkInStatusReader.execute(parameters);
 		try {
-			return checkInStatus.execute(sectionFullName).get();
-		} catch (Exception e) {
+			JSONObject checkInStatusJSON = new JSONObject(checkInStatusRaw);
+			return checkInStatusJSON.getString("Status");
+		} catch (JSONException e) {
 			return "FAILED";
-		} 
-	}
-	
-	private class CheckInStatusTask extends AsyncTask<String, Void, String> {
-		
-		@Override
-		protected String doInBackground(String... params) {
-			String sectionFullName = params[0];
-    		DatabaseReader checkInStatusReader = new DatabaseReader("http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/checkinstatus.php");
-    		Map<String, String> parameters = new HashMap<String, String>();
-    		parameters.put("netid", netID);
-    		parameters.put("sectionfullname", sectionFullName);
-    		try {
-            	JSONObject checkInStatusJson = new JSONObject(checkInStatusReader.performRead(parameters));
-				return checkInStatusJson.getString("Status");
-			} catch (JSONException e) {
-				return "FAILED";
-			}
 		}
-	} 
-	
+	}
 	
 	
 	@Override

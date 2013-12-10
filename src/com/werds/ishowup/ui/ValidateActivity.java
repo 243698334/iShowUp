@@ -24,9 +24,7 @@ public class ValidateActivity extends Activity {
 	private String netID;
 	private String firstName = "";
 	private String courseTitle, courseNo, section;
-	
-	private String test;
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,40 +42,48 @@ public class ValidateActivity extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		String qrCodeData = new String(bundle.getString("QRCodeData"));
 
-		AttendanceValidator validator = new AttendanceValidator(netID,
-				qrCodeData);
-		test=validator.validateCheckIn();
-		Log.d("returnValue", test);
-		if (test.equals("SUCCESS\n")) {
+		AttendanceValidator validator = new AttendanceValidator(netID, qrCodeData);
+		String validateStatus = validator.validateCheckIn();
+		Log.d("returnValue", validateStatus);
+		
+		if (validator.isValid()) {
+			onValidateSuccess();
 			// check in successfully
-			icon.setBackgroundResource(R.drawable.check);
-			hello.setText("Hello " + firstName);
-			courseInfo.setText(courseTitle+" "+courseNo+" "+section);
-			return_btn.setOnClickListener(new Button.OnClickListener() {
-				public void onClick(View v) {
-					Intent intent = new Intent(ValidateActivity.this,
-							MainActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-			});
 		} else {
+			onValidateFailed();
 			// check in failed
-			icon.setBackgroundResource(R.drawable.cross);
-			hello.setText("Sorry " + firstName);
-			youHave.setText("Your checked-in has failed to");
-			courseInfo.setText(courseTitle+" "+courseNo+" "+section);
-			return_btn.setOnClickListener(new Button.OnClickListener() {
-				public void onClick(View v) {
-					Intent intent = new Intent(ValidateActivity.this,
-							ScanActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-			});
-			return_btn.setText("Try again");
 		}
 
+	}
+	
+	private void onValidateSuccess() {
+		icon.setBackgroundResource(R.drawable.check);
+		hello.setText("Hello " + firstName);
+		courseInfo.setText(courseTitle+" "+courseNo+" "+section);
+		return_btn.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(ValidateActivity.this,
+						MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+	}
+	
+	private void onValidateFailed() {
+		icon.setBackgroundResource(R.drawable.cross);
+		hello.setText("Sorry " + firstName);
+		youHave.setText("Your checked-in has failed to");
+		courseInfo.setText(courseTitle+" "+courseNo+" "+section);
+		return_btn.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(ValidateActivity.this,
+						ScanActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		});
+		return_btn.setText("Try again");
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class DatabaseCommunicator {
 					resultBuilder.append(line + "\n");
 				}
 				isr.close();
-				result = new String(resultBuilder.toString());
+				result = new String(resultBuilder.toString()).trim();
 			} catch (Exception e) {
 				Log.e("DatabaseCommunicator", "Error converting result " + e.toString());
 			}

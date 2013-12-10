@@ -2,6 +2,7 @@ package com.werds.ishowup.dbcommunication;
 
 import java.util.Map;
 
+@Deprecated
 public class DatabaseReader extends DatabaseComm {
 		
 	public DatabaseReader(String phpScriptURL) {
