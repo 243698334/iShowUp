@@ -85,6 +85,7 @@
             android:isIndicator="false"
             android:numStars="5"
             android:paddingLeft="2dip"
+            android:visibility="invisible"
             android:progress="95" />
     </RelativeLayout>
 

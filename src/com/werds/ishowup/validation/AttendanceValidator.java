@@ -15,6 +15,7 @@ import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
 public class AttendanceValidator extends Service {
 
 	private boolean validateStatus;
+	private Map<String, Boolean> detailStatus = new HashMap<String, Boolean>();
 	
 	private String netID;
 	private String qrCodeData;
@@ -56,19 +57,26 @@ public class AttendanceValidator extends Service {
 		return "kevins-macbook-pro";
 	}
 	
+	public Map<String, Boolean> getDetailStatus() {
+		return this.detailStatus;
+	}
+	
 	/**
 	 * Validate the Check-in process.
 	 * @return 
 	 * @throws JSONException 
 	 */
-	public String validateCheckIn() {
-		JSONObject qrCodeJson = null;
+	public void validateCheckIn() {
 		try {
-			qrCodeJson = new JSONObject(this.qrCodeData);
+			JSONObject qrCodeJson = new JSONObject(this.qrCodeData);
 			this.crnFromQR = qrCodeJson.getString("CRN");
 			this.secretKeyFromQR = qrCodeJson.getString("SecretKey");
+			detailStatus.put("QRCode", true);
 		} catch (JSONException e) {
-			return "INVALID_QRCODE";
+			validateStatus = false;
+			detailStatus.put("Status", false);
+			detailStatus.put("QRCode", false);
+			return;
 		}
 		
 		Map<String, String> parameters= new HashMap<String, String>();
@@ -79,12 +87,36 @@ public class AttendanceValidator extends Service {
 		parameters.put("longitude", Double.toString(longitude));
 		parameters.put("deviceid", getDeviceID());
 		DatabaseCommunicator mValidator = new DatabaseCommunicator(VALIDATOR_URL);
-		String status = mValidator.execute(parameters);
-		this.validateStatus = status.indexOf("SUCCESS") != -1;
-		return status;
+		String checkInStatusRaw = mValidator.execute(parameters);
+		
+		try {
+			JSONObject checkInStatusJSON = new JSONObject(checkInStatusRaw);
+			String overallStatus = checkInStatusJSON.getString("Status");
+			if (overallStatus.equals("SUCCESS")) {
+				this.validateStatus = true;
+				detailStatus.put("Status", true);
+				detailStatus.put("AlreadyCheckedIn", checkInStatusJSON.getBoolean("AlreadyCheckedIn"));
+				detailStatus.put("ReturnValue", true);
+				return;
+			} else {
+				this.validateStatus = false;
+				detailStatus.put("Status", false);
+				detailStatus.put("Time", checkInStatusJSON.getBoolean("Time"));
+				detailStatus.put("Enrollment", checkInStatusJSON.getBoolean("Enrollment"));
+				detailStatus.put("SectionReady", checkInStatusJSON.getBoolean("SectionReady"));
+				detailStatus.put("Location", checkInStatusJSON.getBoolean("Location"));
+				detailStatus.put("SecretKey", checkInStatusJSON.getBoolean("SecretKey"));
+				detailStatus.put("DeviceID", checkInStatusJSON.getBoolean("DeviceID"));
+				detailStatus.put("ReturnValue", true);
+				return;
+			}
+		} catch (JSONException e) {
+			this.validateStatus = false;
+			detailStatus.put("Status", false);
+			detailStatus.put("ReturnValue", false);
+			return;
+		}
 	}
-	
-	
 	
 	/**
 	 * @return a String array. NetID, Last Name, First Name, Section Display Name

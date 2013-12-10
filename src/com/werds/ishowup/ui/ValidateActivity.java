@@ -1,5 +1,7 @@
 package com.werds.ishowup.ui;
 
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +19,8 @@ import com.werds.ishowup.validation.AttendanceValidator;
 
 public class ValidateActivity extends Activity {
 
+	private AttendanceValidator validator = null;
+	
 	private SharedPreferences sp;
 	private ImageView icon;
 	private Button return_btn;
@@ -42,9 +46,10 @@ public class ValidateActivity extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		String qrCodeData = new String(bundle.getString("QRCodeData"));
 
-		AttendanceValidator validator = new AttendanceValidator(netID, qrCodeData);
-		String validateStatus = validator.validateCheckIn();
-		Log.d("returnValue", validateStatus);
+		validator = new AttendanceValidator(netID, qrCodeData);
+		validator.validateCheckIn();
+		
+		Log.d("ValidatorStatus", Boolean.toString(validator.isValid()));
 		
 		if (validator.isValid()) {
 			onValidateSuccess();
@@ -68,6 +73,13 @@ public class ValidateActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		/**
+		 * Get Extra info
+		 */
+		Map<String, Boolean> detailStatus = validator.getDetailStatus();
+		boolean overallStatus = detailStatus.get("Status").booleanValue();
+		boolean alreadyCheckedIn = detailStatus.get("AlreadyCheckedIn").booleanValue();
 	}
 	
 	private void onValidateFailed() {
@@ -84,6 +96,17 @@ public class ValidateActivity extends Activity {
 			}
 		});
 		return_btn.setText("Try again");
+		
+		/**
+		 * Get the reason of failure
+		 */
+		Map<String, Boolean> detailStatus = validator.getDetailStatus();
+		boolean overallStatus = detailStatus.get("Status").booleanValue();
+		boolean timeStatus = detailStatus.get("Time").booleanValue();
+		boolean sectionReadyStatus = detailStatus.get("SectionReady").booleanValue();
+		boolean locationStatus = detailStatus.get("Location").booleanValue();
+		boolean secretKeyStatus = detailStatus.get("SecretKey").booleanValue();
+		boolean deviceIDStatus = detailStatus.get("DeviceID").booleanValue();
 	}
 
 	@Override

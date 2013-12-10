@@ -21,6 +21,7 @@ public abstract class DatabaseComm {
 	protected String performComm(Map<String, String> params) {
 		
 		String url = assembleURL(params);
+		Log.d("Query URL", url);
 		
 		// Result String to return
 		String result = null;
