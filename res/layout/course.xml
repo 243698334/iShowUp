@@ -38,7 +38,7 @@
             android:src="@drawable/overflow" />
 
         <TextView
-            android:id="@+id/course"
+            android:id="@+id/course_no"
             style="@style/PrimaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,26 +54,38 @@
             android:text="Course No." />
 
         <TextView
-            android:id="@+id/section"
+            android:id="@+id/course_title"
             style="@style/SecondaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/overflowButton"
             android:layout_alignParentTop="false"
-            android:layout_below="@id/course"
+            android:layout_below="@id/course_no"
             android:lines="2"
             android:paddingLeft="@dimen/project_card_padding"
             android:text="Course Title" />
 
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/instructor"
             style="@style/SecondaryTextLime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="false"
-            android:layout_below="@id/section"
+            android:layout_below="@id/course_title"
             android:paddingLeft="@dimen/project_card_padding"
             android:text="Instructor" />
+
+        <RatingBar
+            android:id="@+id/ratingBar1"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_below="@id/instructor"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:paddingLeft="2dip"
+            android:progress="95" />
     </RelativeLayout>
 
 </RelativeLayout>

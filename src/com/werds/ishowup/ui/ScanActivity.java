@@ -1,5 +1,6 @@
 package com.werds.ishowup.ui;
 
+import info.androidhive.slidingmenu.R;
 import net.sourceforge.zbar.CameraPreview;
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -18,8 +19,6 @@ import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-
-import com.werds.ishowup.R;
 
 public class ScanActivity extends Activity {
 

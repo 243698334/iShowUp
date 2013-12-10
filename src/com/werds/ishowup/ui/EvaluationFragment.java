@@ -1,7 +1,6 @@
 package com.werds.ishowup.ui;
 
-import com.werds.ishowup.R;
-
+import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,6 +1,8 @@
 package com.werds.ishowup.ui;
 
 
+import info.androidhive.slidingmenu.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,9 +28,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.werds.ishowup.R;
+import com.mkyong.android.adapter.ImageAdapter;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
-import com.werds.ishowup.ui.adapter.GridCardAdapter;
 
 public class HomeFragment extends Fragment {
 
@@ -43,7 +44,6 @@ public class HomeFragment extends Fragment {
 	private String netID;
 	private String firstName;
 	
-
 	/******************* GridView TEST *******************/
 	GridView gridView;
 
@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
 		/******************* GridView *******************/
 		gridView = (GridView) rootView.findViewById(R.id.gridview1);
 
-		gridView.setAdapter(new GridCardAdapter(getActivity(), course,
+		gridView.setAdapter(new ImageAdapter(getActivity(), course,
 				section, status));
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -142,8 +142,6 @@ public class HomeFragment extends Fragment {
 		});
 		
 
-		/******************* GridView *******************/
-
 		scan_btn = (Button) rootView.findViewById(R.id.scan_btn);
 		scan_btn.setOnClickListener(new View.OnClickListener() {
 
@@ -152,8 +150,7 @@ public class HomeFragment extends Fragment {
 				startActivity(new Intent(getActivity(), ScanActivity.class));
 			}
 		});
-
+		
 		return rootView;
 	}
-
 }
