@@ -35,7 +35,8 @@
             android:paddingLeft="20.0dip"
             android:paddingRight="10.0dip"
             android:paddingTop="5.0dip"
-            android:src="@drawable/overflow" />
+            android:src="@drawable/overflow" 
+            android:clickable="true" />
 
         <TextView
             android:id="@+id/course_no"
