@@ -18,6 +18,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,6 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 	
 	/******************* GridView TEST *******************/
 	GridView gridView;
-
-	ArrayList<String> COURSES_NO = new ArrayList<String>();
-	ArrayList<String> COURSES_TITLE = new ArrayList<String>();
-	ArrayList<String> INSTRUCTOR = new ArrayList<String>();
 	
 	ArrayList<String> course = new ArrayList<String>();
 	ArrayList<String> section = new ArrayList<String>();
@@ -136,8 +133,7 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 		/******************* GridView *******************/
 		gridView = (GridView) rootView.findViewById(R.id.gridview1);
 
-		gridView.setAdapter(new GridCardAdapter(getActivity(), course,
-				section, status));
+		gridView.setAdapter(new GridCardAdapter(getActivity(), course, section, status));
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
@@ -166,6 +162,27 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 	@Override
 	public void onRefreshStarted(View view) {
 		// TODO Auto-generated method stub
+		ArrayList<String> refreshCourse = new ArrayList<String>();
+		ArrayList<String> refreshSection = new ArrayList<String>();
+		ArrayList<String> refreshStatus = new ArrayList<String>();
 		
+		for (Iterator<String> i = allSections.iterator(); i.hasNext(); ) {
+			String currStrRaw = i.next();
+			String currCourse = currStrRaw.substring(0, currStrRaw.lastIndexOf(' '));
+			String currSection = currStrRaw.substring(currStrRaw.lastIndexOf(' ') + 1);
+			String currStatus = checkInStatus(currStrRaw);
+			
+			if (currStatus.equals("GO_AHEAD")) {
+				refreshStatus.add("Go ahead and check-in!");
+			} else if (currStatus.equals("NOT_READY")) {
+				refreshStatus.add("Not ready for check-in");
+			} else if (currStatus.equals("ALREADY_CHECKED_IN")) {
+				refreshStatus.add("Already checked-in");
+			}
+			refreshCourse.add(currCourse);
+			refreshSection.add("Section " + currSection);
+		}
+		gridView.setAdapter(new GridCardAdapter(getActivity(), refreshCourse, refreshSection, refreshStatus));
+		mPullToRefreshLayout.setRefreshComplete();
 	}
 }
