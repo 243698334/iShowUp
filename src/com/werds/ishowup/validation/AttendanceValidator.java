@@ -7,11 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.telephony.TelephonyManager;
 
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
@@ -25,7 +23,6 @@ public class AttendanceValidator extends Service {
 
 	private double latitude;
 	private double longitude;
-	private long epochTime;
 	
 	// The URL for the PHP script to validate check-in process. 
 	private static final String VALIDATOR_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/validate.php";
@@ -35,6 +32,7 @@ public class AttendanceValidator extends Service {
 	public AttendanceValidator(String netID, String qrCodeData) {
 		this.netID = new String(netID);
 		this.qrCodeData = new String(qrCodeData);
+		fetchLocation();
 	}
 	
 	private void fetchLocation() {
@@ -53,16 +51,12 @@ public class AttendanceValidator extends Service {
 		return "kevins-macbook-pro";
 	}
 	
-	
-	private void fetchEpochTime() {
-		this.epochTime = System.currentTimeMillis() / 1000;
-	}
-	
 	/**
 	 * Validate the Check-in process.
 	 * @return 
 	 * @throws JSONException 
 	 */
+	@SuppressWarnings("unchecked")
 	public String validateCheckIn() {
 		JSONObject qrCodeJson = null;
 		try {
@@ -116,6 +110,7 @@ public class AttendanceValidator extends Service {
 	 * @throws JSONException 
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	public String[] fetchCheckInInfo() throws JSONException {
 		String[] studentInfo = null;
 		Map<String, String> parameters = new HashMap<String, String>();

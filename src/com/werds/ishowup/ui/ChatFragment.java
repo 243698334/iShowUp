@@ -1,12 +1,13 @@
 package com.werds.ishowup.ui;
 
-import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+
+import com.werds.ishowup.R;
 
 public class ChatFragment extends Fragment {
 

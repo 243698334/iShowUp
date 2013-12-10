@@ -42,5 +42,6 @@
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="validate_success">Check in successfully!</string>
     <string name="validate_fail">Check in failed.</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
 
 </resources>

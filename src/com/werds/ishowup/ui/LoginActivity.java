@@ -1,8 +1,6 @@
 package com.werds.ishowup.ui;
 
 
-import info.androidhive.slidingmenu.R;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +32,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
 /**
@@ -294,10 +294,10 @@ public class LoginActivity extends Activity {
                 		Set<String> allSections = new HashSet<String>();
                 		for (int i = 0; i < sections.length(); i++) {
                 			allSections.add(sections.getString(i).replace('_', ' '));
-                			//Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
+                			Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
                 		}
                 		sp.edit().putStringSet("allSections", allSections).commit();
-                		sp.edit().putString("FirstName", firstName).commit();;
+                		sp.edit().putString("FirstName", firstName).commit();
                 		return true;
                     } else 
                     	return true;

@@ -1,8 +1,6 @@
 package com.werds.ishowup.ui;
 
 
-import info.androidhive.slidingmenu.R;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseReader;
 
 /**

@@ -1,8 +1,6 @@
 package com.werds.ishowup.ui.adapter;
 
 
-import info.androidhive.slidingmenu.R;
-
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -14,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.werds.ishowup.R;
 import com.werds.ishowup.ui.model.NavDrawerItem;
 
 public class NavDrawerListAdapter extends BaseAdapter {

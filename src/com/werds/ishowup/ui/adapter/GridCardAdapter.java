@@ -1,10 +1,7 @@
-package com.mkyong.android.adapter;
+package com.werds.ishowup.ui.adapter;
 
-
-import info.androidhive.slidingmenu.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,16 +11,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ImageAdapter extends BaseAdapter {
+import com.werds.ishowup.R;
+
+public class GridCardAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<String> courseList;
 	private ArrayList<String> sectionList;
 	private ArrayList<String> statusList;
 	private TextView course, section, status;
 	private ImageView imageView;
-	private HashMap<String, Integer> map;
 
-	public ImageAdapter(Context context, ArrayList<String> courseList,
+	public GridCardAdapter(Context context, ArrayList<String> courseList,
 			ArrayList<String> sectionList, ArrayList<String> statusList) {
 		this.context = context;
 		this.courseList = courseList;
@@ -58,7 +56,6 @@ public class ImageAdapter extends BaseAdapter {
 			// set image based on selected text
 			imageView = (ImageView) gridView.findViewById(R.id.courseicon);
 
-			map = new HashMap<String, Integer>();
 			switch (position) {
 			case 0:
 				imageView.setImageResource(R.drawable.cs411_pic);

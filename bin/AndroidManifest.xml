@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.androidhive.slidingmenu"
+    package="com.werds.ishowup"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -23,11 +23,6 @@
             android:label="@string/app_name"
             android:noHistory="true"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.werds.ishowup.ui.ScanActivity"
@@ -41,7 +36,7 @@
                 android:value="info.androidhive.slidingmenu.MainActivity" />
         </activity>
         <activity
-            android:name ="com.werds.ishowup.ui.ValidateActivity"
+            android:name="com.werds.ishowup.ui.ValidateActivity"
             android:label="@string/title_activity_validate"
             android:parentActivityName="com.werds.ishowup.ui.MainActivity" >
 
@@ -63,6 +58,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.werds.ishowup.LoginActivity" />
+        </activity>
+        <activity
+            android:name="com.werds.ishowup.ui.WelcomeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
