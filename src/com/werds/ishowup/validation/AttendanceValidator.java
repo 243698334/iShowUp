@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
 
@@ -42,13 +43,19 @@ public class AttendanceValidator extends Service {
 	}
 	
 	private void fetchLocation() {
-		LocationTracker mLocation = new LocationTracker(this);
+		LocationService mLocation = new LocationService();
+		this.latitude = mLocation.getLatitude();
+		this.longitude = mLocation.getLongitude();
+		
+		Log.d("Location", "Lat: " + latitude);
+		Log.d("Location", "Lng: " + longitude);
+		/*
 		if (mLocation.locationAvailable()) {
 			this.latitude = mLocation.getLatitude();
 			this.longitude = mLocation.getLongitude();
 		} else {
 			this.latitude = this.longitude = 0.0;
-		}
+		}*/
 	}
 	
 	public String getDeviceID() {
