@@ -277,6 +277,7 @@ public class LoginActivity extends Activity {
             DatabaseReader login = new DatabaseReader(DATABASE_LOGIN_PHP);
             String loginStatus = new String(login.performRead(parameters));
             if (loginStatus.equals("Accept\n")) {
+        		sp.edit().putString("NetID", mNetID).commit();;
             	Map<String, String> sectionLookupParam = new HashMap<String, String>();
             	sectionLookupParam.put("netid", mNetID);
             	sectionLookupParam.put("operation", "lookup");
