@@ -11,10 +11,12 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +30,9 @@ import android.widget.Toast;
 
 import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
-import com.werds.ishowup.dbcommunication.DatabaseReader;
 import com.werds.ishowup.ui.adapter.GridCardAdapter;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnRefreshListener{
 
 	public HomeFragment() {
 	}
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment {
 	private Set<String> allSections;
 	private String netID;
 	private String firstName;
+	
+	private PullToRefreshLayout mPullToRefreshLayout;
 	
 	/******************* GridView TEST *******************/
 	GridView gridView;
@@ -79,16 +82,34 @@ public class HomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
+		
+		
 		// Get All sections for this student from Shared Preference
 		sp = getActivity().getSharedPreferences("userInfo", 0);
 		allSections = sp.getStringSet("allSections", new HashSet<String>());
 		netID = sp.getString("NetID", null);
 		firstName = sp.getString("FirstName", null);
 		//greeting = (TextView)findViewById(R.id.greeting);
+		
+		
+		
+		
 		View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 		greeting = (TextView)rootView.findViewById(R.id.greeting);
 		greeting.setText("What's up, " + firstName + "!");
+		
+		mPullToRefreshLayout = (PullToRefreshLayout)rootView.findViewById(R.id.ptr_layout);
+		// Now setup the PullToRefreshLayout
+		ActionBarPullToRefresh.from(getActivity())
+	            // Mark All Children as pullable
+	            .allChildrenArePullable()
+	            // Set the OnRefreshListener
+	            .listener(this)
+	            // Finally commit the setup to our PullToRefreshLayout
+	            .setup(mPullToRefreshLayout);
+		
+		
 		
 		for (Iterator<String> i = allSections.iterator(); i.hasNext(); ) {
 			String currStrRaw = i.next();
@@ -139,5 +160,12 @@ public class HomeFragment extends Fragment {
 		});
 		
 		return rootView;
+	}
+
+
+	@Override
+	public void onRefreshStarted(View view) {
+		// TODO Auto-generated method stub
+		
 	}
 }
