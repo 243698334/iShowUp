@@ -17,8 +17,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
+import com.werds.ishowup.dbcommunication.DatabaseReader;
 import com.werds.ishowup.ui.adapter.GridCardAdapter;
 
 public class HomeFragment extends Fragment implements OnRefreshListener{
@@ -159,30 +160,61 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onRefreshStarted(View view) {
-		// TODO Auto-generated method stub
-		ArrayList<String> refreshCourse = new ArrayList<String>();
-		ArrayList<String> refreshSection = new ArrayList<String>();
-		ArrayList<String> refreshStatus = new ArrayList<String>();
 		
-		for (Iterator<String> i = allSections.iterator(); i.hasNext(); ) {
-			String currStrRaw = i.next();
-			String currCourse = currStrRaw.substring(0, currStrRaw.lastIndexOf(' '));
-			String currSection = currStrRaw.substring(currStrRaw.lastIndexOf(' ') + 1);
-			String currStatus = checkInStatus(currStrRaw);
+		new AsyncTask<Void, Void, Void>() {
 			
-			if (currStatus.equals("GO_AHEAD")) {
-				refreshStatus.add("Go ahead and check-in!");
-			} else if (currStatus.equals("NOT_READY")) {
-				refreshStatus.add("Not ready for check-in");
-			} else if (currStatus.equals("ALREADY_CHECKED_IN")) {
-				refreshStatus.add("Already checked-in");
+			@Override
+			protected Void doInBackground(Void... params) {
+				course = new ArrayList<String>();
+				section = new ArrayList<String>();
+				status = new ArrayList<String>();
+				
+				for (Iterator<String> i = allSections.iterator(); i.hasNext(); ) {
+					String currStrRaw = i.next();
+					String currCourse = currStrRaw.substring(0, currStrRaw.lastIndexOf(' '));
+					String currSection = currStrRaw.substring(currStrRaw.lastIndexOf(' ') + 1);
+					String currStatus = checkInStatusSingleThread(currStrRaw);
+					
+					if (currStatus.equals("GO_AHEAD")) {
+						status.add("Go ahead and check-in!");
+					} else if (currStatus.equals("NOT_READY")) {
+						status.add("Not ready for check-in");
+					} else if (currStatus.equals("ALREADY_CHECKED_IN")) {
+						status.add("Already checked-in");
+					}
+					course.add(currCourse);
+					section.add("Section " + currSection);
+				}
+				return null;
 			}
-			refreshCourse.add(currCourse);
-			refreshSection.add("Section " + currSection);
-		}
-		gridView.setAdapter(new GridCardAdapter(getActivity(), refreshCourse, refreshSection, refreshStatus));
-		mPullToRefreshLayout.setRefreshComplete();
+			
+			@Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+
+                // Notify PullToRefreshLayout that the refresh has finished
+                mPullToRefreshLayout.setRefreshComplete();
+            }
+			
+			private String checkInStatusSingleThread(String sectionFullName) {
+				sectionFullName = sectionFullName.replace(' ', '_');
+				Map<String, String> parameters = new HashMap<String, String>();
+				parameters.put("netid", netID);
+				parameters.put("sectionfullname", sectionFullName);
+				DatabaseReader checkInStatusReader = new DatabaseReader(CHECKIN_STATUS_URL);
+				String checkInStatusRaw = checkInStatusReader.performRead(parameters);
+				
+				try {
+					JSONObject checkInStatusJSON = new JSONObject(checkInStatusRaw);
+					return checkInStatusJSON.getString("Status");
+				} catch (JSONException e) {
+					return "FAILED";
+				}
+			}
+        }.execute();
+        gridView.setAdapter(new GridCardAdapter(getActivity(), course, section, status));
 	}
 }
