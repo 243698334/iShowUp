@@ -16,10 +16,6 @@
 
 package uk.co.senab.actionbarpulltorefresh.library;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
-
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +25,9 @@ import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.AbsListViewDeleg
 import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ScrollYDelegate;
 import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.WebViewDelegate;
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
 
 class InstanceCreationUtils {
 

@@ -8,7 +8,9 @@ import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
@@ -20,12 +22,12 @@ public class AttendanceValidator extends Service {
 	
 	private String netID;
 	private String qrCodeData;
-	
 	private String crnFromQR;
 	private String secretKeyFromQR;
 
 	private double latitude;
 	private double longitude;
+	private String androidID;
 	
 	// The URL for the PHP script to validate check-in process. 
 	private static final String VALIDATOR_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/validate.php";
@@ -58,10 +60,11 @@ public class AttendanceValidator extends Service {
 		}*/
 	}
 	
-	public String getDeviceID() {
-		//TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-		//return telephonyManager.getDeviceId();
-		return "kevins-macbook-pro";
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		String androidID = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+		Log.d("getDeviceID", "DeviceID: "+androidID);
 	}
 	
 	public Map<String, Boolean> getDetailStatus() {
@@ -92,7 +95,7 @@ public class AttendanceValidator extends Service {
 		parameters.put("secretkey", secretKeyFromQR);
 		parameters.put("latitude", Double.toString(latitude));
 		parameters.put("longitude", Double.toString(longitude));
-		parameters.put("deviceid", getDeviceID());
+		parameters.put("deviceid", androidID);
 		DatabaseCommunicator mValidator = new DatabaseCommunicator(VALIDATOR_URL);
 		String checkInStatusRaw = mValidator.execute(parameters);
 		

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
