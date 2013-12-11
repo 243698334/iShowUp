@@ -127,16 +127,14 @@ public class AttendanceValidator extends Service {
 	
 	/**
 	 * @return a String array. NetID, Last Name, First Name, Section Display Name
-	 * 						   Total sections count, Attended sections count
-	 * 
-	 * @throws JSONException 
+	 * 						   Total sections count, Attended sections count 
 	 * 
 	 */
 	@SuppressWarnings("null")
-	public Map<String, String> fetchCheckInInfo() throws JSONException {
+	public Map<String, String> fetchCheckInInfo() {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("netid", netID);
-		parameters.put("crn", "31602");
+		parameters.put("crn", crnFromQR);
 		DatabaseCommunicator mFetcher = new DatabaseCommunicator(CHECKININFO_URL);
 		String checkInInfoRaw =  mFetcher.execute(parameters);
 		try {

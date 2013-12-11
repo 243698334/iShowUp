@@ -27,7 +27,7 @@ public class ValidateActivity extends Activity {
 	private TextView hello, youHave, courseInfo;
 	private String netID;
 	private String firstName = "";
-	private String courseTitle, courseNo, section;
+	private String sectionDisplayName = "";
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,11 @@ public class ValidateActivity extends Activity {
 		
 		validator = new AttendanceValidator(netID, qrCodeData);
 		validator.validateCheckIn();
+		Map<String, String> checkInInfo = validator.fetchCheckInInfo();
+		if (checkInInfo != null) {
+			this.sectionDisplayName = checkInInfo.get("SectionName");
+		}
+		
 		
 		Log.d("ValidatorStatus", Boolean.toString(validator.isValid()));
 		
@@ -66,7 +71,7 @@ public class ValidateActivity extends Activity {
 	private void onValidateSuccess() {
 		icon.setBackgroundResource(R.drawable.check);
 		hello.setText("Hello " + firstName);
-		courseInfo.setText(courseTitle+" "+courseNo+" "+section);
+		courseInfo.setText(sectionDisplayName);
 		return_btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(ValidateActivity.this,
@@ -87,8 +92,7 @@ public class ValidateActivity extends Activity {
 	private void onValidateFailed() {
 		icon.setBackgroundResource(R.drawable.cross);
 		hello.setText("Sorry " + firstName);
-		youHave.setText("Your checked-in has failed to");
-		courseInfo.setText(courseTitle+" "+courseNo+" "+section);
+		youHave.setText("Check in failed.");
 		return_btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(ValidateActivity.this,
