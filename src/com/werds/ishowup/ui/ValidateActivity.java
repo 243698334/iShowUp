@@ -46,6 +46,8 @@ public class ValidateActivity extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		String qrCodeData = new String(bundle.getString("QRCodeData"));
 
+		firstName = sp.getString("FirstName", null);
+		
 		validator = new AttendanceValidator(netID, qrCodeData);
 		validator.validateCheckIn();
 		
