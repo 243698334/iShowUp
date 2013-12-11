@@ -6,15 +6,13 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/greeting"
+        android:id="@+id/nosection"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
-        android:text="  Greeting"
-        android:textSize="23sp" />
-        
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/scan_btn"
+        android:gravity="center"
+        android:text=""
+        android:textSize="16sp" />
 
     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +24,6 @@
             android:id="@+id/gridview1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/greeting"
             android:layout_marginBottom="60dp"
             android:columnWidth="90dp"
             android:gravity="center"
@@ -43,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/scan_btn"
-        android:text="Scan QRCode to check-in"
+        android:text="Scan QRCode to check in"
         android:textColor="@color/white"
         android:textStyle="bold" />
 

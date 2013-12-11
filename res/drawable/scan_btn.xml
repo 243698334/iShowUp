@@ -4,14 +4,14 @@
     <!-- #00000000 is transparent -->
 
     <gradient
-        android:endColor="@color/gray_dark"
+        android:endColor="@color/action_bar_gray"
         android:gradientRadius="90"
-        android:startColor="@color/gray_dark"
+        android:startColor="@color/action_bar_gray"
         android:type="radial" />
 
     <stroke
         android:width="2dip"
-        android:color="@color/gray" />
+        android:color="@color/gray_dark" />
 
     <padding
         android:bottom="10dp"

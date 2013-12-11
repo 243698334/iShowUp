@@ -47,4 +47,9 @@
     <color name="transparent_holo_light_blue">#4433b5e5</color>
     <color name="background_tab_pressed">#6633B5E5</color>
 
+    <!-- Color FROM SAVIER -->
+    <color name="background_gray">#FF939598</color>
+    <color name="action_bar_gray">#FF6d6e71</color>
+    <color name="dark_gray">#FF333333</color>
+    
 </resources>

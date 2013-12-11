@@ -128,5 +128,21 @@
         <item name="android:textSize">@dimen/card_secondary_text_size</item>
         <item name="android:textColor">@color/lime_dark</item>
     </style>
+    
+    <!-- THEME FROM SAVIER -->
+    <style name="Theme.Savier" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- <item name="android:windowBackground">@color/background_gray</item> -->
+        <item name="android:actionBarStyle">@style/savierActionBar</item>
+    </style>
+
+    <style name="savierActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/action_bar</item>
+    </style>
+    
+    <!-- Overlay the actionbar to make it transparent -->
+    <style name="Theme.Scan" parent="@android:style/Theme.Holo">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+    
 
 </resources>

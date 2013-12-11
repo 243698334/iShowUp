@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +20,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +44,7 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 	}
 
 	private final String CHECKIN_STATUS_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/checkinstatus.php";
-	
-	private Button scan_btn;
-	private TextView greeting;
+	private final String SIGNUP_PHP = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/register.php";
 
 	private SharedPreferences sp;
 	private Set<String> allSections;
@@ -50,9 +52,9 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 	private String firstName;
 	
 	private PullToRefreshLayout mPullToRefreshLayout;
-	
-	/******************* GridView TEST *******************/
-	GridView gridView;
+	private Button scan_btn;
+	private TextView noSectionTextView;
+	private	GridView gridView;
 	
 	ArrayList<String> course = new ArrayList<String>();
 	ArrayList<String> section = new ArrayList<String>();
@@ -88,14 +90,19 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 		allSections = sp.getStringSet("allSections", new HashSet<String>());
 		netID = sp.getString("NetID", null);
 		firstName = sp.getString("FirstName", null);
-		//greeting = (TextView)findViewById(R.id.greeting);
-		
-		
-		
 		
 		View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-		greeting = (TextView)rootView.findViewById(R.id.greeting);
-		greeting.setText("What's up, " + firstName + "!");
+		noSectionTextView = (TextView)rootView.findViewById(R.id.nosection);
+		final Toast greeting = Toast.makeText(getActivity().getApplicationContext(),"What's up "+firstName+"!" ,Toast.LENGTH_LONG);
+		greeting.setGravity(Gravity.TOP, 0, 400);
+		new CountDownTimer(3000, 1000) {
+		    public void onTick(long millisUntilFinished) {
+		    	greeting.show();
+		    }
+		    public void onFinish() {
+		    	greeting.show();
+		    }
+		}.start();
 		
 		mPullToRefreshLayout = (PullToRefreshLayout)rootView.findViewById(R.id.ptr_layout);
 		// Now setup the PullToRefreshLayout
@@ -124,6 +131,10 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 			}
 			course.add(currCourse);
 			section.add("Section " + currSection);
+		}
+		
+		if (course.size() == 0) {
+			noSectionTextView.setText("You don't have any sections.");
 		}
 
 
@@ -163,7 +174,7 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onRefreshStarted(View view) {
-		
+
 		new AsyncTask<Void, Void, Void>() {
 			
 			@Override
@@ -171,7 +182,31 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 				course = new ArrayList<String>();
 				section = new ArrayList<String>();
 				status = new ArrayList<String>();
-				
+				allSections = new HashSet<String>();
+
+				Map<String, String> sectionLookupParam = new HashMap<String, String>();
+            	sectionLookupParam.put("netid", netID);
+            	sectionLookupParam.put("operation", "lookup");
+
+                DatabaseReader sectionLookUp = new DatabaseReader(SIGNUP_PHP);
+                String sectionLookUpInfo = new String(sectionLookUp.performRead(sectionLookupParam));
+                try {
+                	JSONObject signUpInfoJson = new JSONObject(sectionLookUpInfo);
+                	String signUpStatus = signUpInfoJson.getString("Status");
+                	String firstName = signUpInfoJson.getString("FirstName");
+                	if (signUpStatus.equals("VALID")) {
+                		JSONArray sections = signUpInfoJson.getJSONArray("Sections");
+                		for (int i = 0; i < sections.length(); i++) {
+                			allSections.add(sections.getString(i).replace('_', ' '));
+                			Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
+                		}
+                		sp.edit().putStringSet("allSections", allSections).commit();
+                		sp.edit().putString("FirstName", firstName).commit();
+                    }
+                } catch (JSONException e) {
+                	// nothing...
+                }
+                
 				for (Iterator<String> i = allSections.iterator(); i.hasNext(); ) {
 					String currStrRaw = i.next();
 					String currCourse = currStrRaw.substring(0, currStrRaw.lastIndexOf(' '));
@@ -194,8 +229,13 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 			@Override
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
-
+                if (course.size() == 0) {
+        			noSectionTextView.setText("You don't have any sections.");
+        		} else {
+        			noSectionTextView.setText("");
+        		}
                 // Notify PullToRefreshLayout that the refresh has finished
+                gridView.setAdapter(new GridCardAdapter(getActivity(), course, section, status));
                 mPullToRefreshLayout.setRefreshComplete();
             }
 			
@@ -215,6 +255,6 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 				}
 			}
         }.execute();
-        gridView.setAdapter(new GridCardAdapter(getActivity(), course, section, status));
+        
 	}
 }
