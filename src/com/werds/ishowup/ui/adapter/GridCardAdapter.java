@@ -67,6 +67,8 @@ public class GridCardAdapter extends BaseAdapter {
 				course_pic.setImageResource(R.drawable.cs418_pic);
 			else if (courseList.get(position).equals("CS 440"))
 				course_pic.setImageResource(R.drawable.cs440_pic);
+			else if (courseList.get(position).equals("CS 357"))
+				course_pic.setImageResource(R.drawable.cs357_pic);
 			else 
 				course_pic.setImageResource(R.drawable.temple_icon);
 		} else {
