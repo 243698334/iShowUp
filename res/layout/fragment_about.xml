@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/about_title"
         android:layout_centerInParent="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:shadowRadius="1"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"

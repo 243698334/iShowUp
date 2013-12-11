@@ -15,6 +15,7 @@
 
 
     <!-- Color FROM ISHOWUP -->
+    <color name="main_blue">#0071BC</color>
     <color name="white">#ffffffff</color>
     <color name="black">#00000000</color>
     <color name="gray">#ff888888</color>
