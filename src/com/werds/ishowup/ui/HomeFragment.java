@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -190,7 +191,7 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 				course = new ArrayList<String>();
 				section = new ArrayList<String>();
 				status = new ArrayList<String>();
-				allSections = new HashSet<String>();
+				allSections = new LinkedHashSet<String>();
 
 				Map<String, String> sectionLookupParam = new HashMap<String, String>();
             	sectionLookupParam.put("netid", netID);

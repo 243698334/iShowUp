@@ -2,7 +2,7 @@ package com.werds.ishowup.ui;
 
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -291,7 +291,7 @@ public class LoginActivity extends Activity {
                 	if (signUpStatus.equals("VALID")) {
                     	// Store all sections found for this student
                 		JSONArray sections = signUpInfoJson.getJSONArray("Sections");
-                		Set<String> allSections = new HashSet<String>();
+                		Set<String> allSections = new LinkedHashSet<String>();
                 		for (int i = 0; i < sections.length(); i++) {
                 			allSections.add(sections.getString(i).replace('_', ' '));
                 			Log.d("allSections"+i, sections.getString(i).replace('_', ' '));
