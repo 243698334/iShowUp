@@ -70,7 +70,7 @@ public class GridCardAdapter extends BaseAdapter {
 			else if (courseList.get(position).equals("CS 357"))
 				course_pic.setImageResource(R.drawable.cs357_pic);
 			else 
-				course_pic.setImageResource(R.drawable.temple_icon);
+				course_pic.setImageResource(R.drawable.default_pic);
 		} else {
 			gridView = (View) convertView;
 			//Button button = (Button)gridView.findViewById(R.id.overflowButton);

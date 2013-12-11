@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.werds.ishowup.R;
@@ -24,8 +25,11 @@ public class ChatFragment extends Fragment {
 				false);
 
 		chat_page = (WebView) rootView.findViewById(R.id.chat_page);
-
+		WebSettings webSettings = chat_page.getSettings();
+		webSettings.setJavaScriptEnabled(true);
 		chat_page.loadUrl("http://web.engr.illinois.edu/~ishowup4cs411/chat.php");
+		
+		
 
 		return rootView;
 	}

@@ -145,7 +145,7 @@ public class AttendanceValidator extends Service {
 			checkInInfo.put("FirstName", checkInInfoJSON.getString("FirstName"));
 			checkInInfo.put("SectionName", checkInInfoJSON.getString("SectionName"));
 			checkInInfo.put("totalCount", checkInInfoJSON.getString("totalCount"));
-			checkInInfo.put("attenCount", checkInInfoJSON.getString("attenCount"));
+			checkInInfo.put("attendCount", checkInInfoJSON.getString("attendCount"));
 			return checkInInfo;
 		} catch (JSONException e) {
 			return null;

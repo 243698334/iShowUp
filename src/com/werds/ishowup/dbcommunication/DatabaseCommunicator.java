@@ -44,6 +44,7 @@ public class DatabaseCommunicator {
 		protected String doInBackground(Map<String, String>... params) {
 			Map<String, String> parameters = params[0];
 			String queryURL = assembleURL(parameters);
+			Log.d("DatabaseCommunicator", "Requesting from URL: "+queryURL);
 			String result = null;
 			InputStream isr = null;
 			try {

@@ -50,11 +50,6 @@ public class ValidateActivity extends Activity {
 		
 		validator = new AttendanceValidator(netID, qrCodeData);
 		validator.validateCheckIn();
-		Map<String, String> checkInInfo = validator.fetchCheckInInfo();
-		if (checkInInfo != null) {
-			this.sectionDisplayName = checkInInfo.get("SectionName");
-		}
-		
 		
 		Log.d("ValidatorStatus", Boolean.toString(validator.isValid()));
 		
@@ -87,6 +82,13 @@ public class ValidateActivity extends Activity {
 		Map<String, Boolean> detailStatus = validator.getDetailStatus();
 		boolean overallStatus = detailStatus.get("Status").booleanValue();
 		boolean alreadyCheckedIn = detailStatus.get("AlreadyCheckedIn").booleanValue();
+		Map<String, String> checkInInfo = validator.fetchCheckInInfo();
+		if (checkInInfo != null) {
+			this.sectionDisplayName = checkInInfo.get("SectionName");
+			String totalCount = checkInInfo.get("totalCount");
+			String attendCount = checkInInfo.get("attendCount");
+		}
+		
 	}
 	
 	private void onValidateFailed() {
@@ -107,12 +109,15 @@ public class ValidateActivity extends Activity {
 		 * Get the reason of failure
 		 */
 		Map<String, Boolean> detailStatus = validator.getDetailStatus();
-		boolean overallStatus = detailStatus.get("Status").booleanValue();
-		boolean timeStatus = detailStatus.get("Time").booleanValue();
-		boolean sectionReadyStatus = detailStatus.get("SectionReady").booleanValue();
-		boolean locationStatus = detailStatus.get("Location").booleanValue();
-		boolean secretKeyStatus = detailStatus.get("SecretKey").booleanValue();
-		boolean deviceIDStatus = detailStatus.get("DeviceID").booleanValue();
+		if (detailStatus.get("QRCode")) {
+			boolean overallStatus = detailStatus.get("Status").booleanValue();
+			boolean timeStatus = detailStatus.get("Time").booleanValue();
+			boolean sectionReadyStatus = detailStatus.get("SectionReady").booleanValue();
+			boolean locationStatus = detailStatus.get("Location").booleanValue();
+			boolean secretKeyStatus = detailStatus.get("SecretKey").booleanValue();
+			boolean deviceIDStatus = detailStatus.get("DeviceID").booleanValue();
+		}
+		
 	}
 
 	@Override
