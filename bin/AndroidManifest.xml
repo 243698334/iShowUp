@@ -26,10 +26,10 @@
         </activity>
         <activity
             android:name="com.werds.ishowup.ui.ScanActivity"
-            android:theme="@style/Theme.Scan"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_scan"
-            android:parentActivityName="com.werds.ishowup.ui.MainActivity" >
+            android:parentActivityName="com.werds.ishowup.ui.MainActivity"
+            android:theme="@style/Theme.Scan" >
 
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
@@ -62,13 +62,18 @@
         </activity>
         <activity
             android:name="com.werds.ishowup.ui.WelcomeActivity"
-            android:label="@string/app_name" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.werds.ishowup.ui.ViewPagerActivity"
+            android:label="@string/title_activity_view_pager"
+            android:parentActivityName="com.werds.ishowup.ui.MainActivity" >
         </activity>
     </application>
 

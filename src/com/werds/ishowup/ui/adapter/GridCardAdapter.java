@@ -21,7 +21,7 @@ public class GridCardAdapter extends BaseAdapter {
 	private ArrayList<String> sectionList;
 	private ArrayList<String> statusList;
 	private TextView course, section, status;
-	private ImageView imageView;
+	private ImageView course_pic;
 
 	public GridCardAdapter(Context context, ArrayList<String> courseList,
 			ArrayList<String> sectionList, ArrayList<String> statusList) {
@@ -56,38 +56,19 @@ public class GridCardAdapter extends BaseAdapter {
 			status.setText(statusList.get(position));
 
 			// set image based on selected text
-			imageView = (ImageView) gridView.findViewById(R.id.courseicon);
-
-			switch (position) {
-			case 0:
-				imageView.setImageResource(R.drawable.cs411_pic);
-				break;
-			case 1:
-				imageView.setImageResource(R.drawable.cs357_pic);
-				break;
-			case 2:
-				imageView.setImageResource(R.drawable.cs440_pic);
-				break;
-			case 3:
-				imageView.setImageResource(R.drawable.cs418_pic);
-				break;
-			case 4:
-				imageView.setImageResource(R.drawable.cs461_pic);
-				break;
-			default:
-				imageView.setImageResource(R.drawable.temple_icon);
-				break;
-			}
-			/*
-			 * if (course.equals("Windows")) {
-			 * imageView.setImageResource(R.drawable.windows_logo); } else if
-			 * (course.equals("iOS")) {
-			 * imageView.setImageResource(R.drawable.ios_logo); } else if
-			 * (course.equals("Blackberry")) {
-			 * imageView.setImageResource(R.drawable.blackberry_logo); } else {
-			 * imageView.setImageResource(R.drawable.android_logo); }
-			 */
-
+			course_pic = (ImageView) gridView.findViewById(R.id.courseicon);
+			if (courseList.get(position).equals("CS 411"))
+				course_pic.setImageResource(R.drawable.cs411_pic);
+			else if (courseList.get(position).equals("CS 511"))
+				course_pic.setImageResource(R.drawable.cs511_pic);
+			else if (courseList.get(position).equals("CS 461"))
+				course_pic.setImageResource(R.drawable.cs461_pic);
+			else if (courseList.get(position).equals("CS 418"))
+				course_pic.setImageResource(R.drawable.cs418_pic);
+			else if (courseList.get(position).equals("CS 440"))
+				course_pic.setImageResource(R.drawable.cs440_pic);
+			else 
+				course_pic.setImageResource(R.drawable.temple_icon);
 		} else {
 			gridView = (View) convertView;
 			//Button button = (Button)gridView.findViewById(R.id.overflowButton);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -179,8 +180,10 @@ public class MainActivity extends Activity {
 			fragment = new ChatFragment();
 			break;
 		case MY_RECORD:
-			fragment = new MyRecordFragment();
-			break;
+			/*fragment = new MyRecordFragment();
+			break;*/
+			startActivity(new Intent(MainActivity.this, ViewPagerActivity.class));
+			return;
 		case EVALUATION:
 			fragment = new EvaluationFragment();
 			break;

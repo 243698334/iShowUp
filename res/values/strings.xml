@@ -46,5 +46,6 @@
     <string name="validate_success">Check in successfully!</string>
     <string name="validate_fail">Check in failed.</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_view_pager">My Record</string>
 
 </resources>
