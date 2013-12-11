@@ -95,14 +95,22 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 		noSectionTextView = (TextView)rootView.findViewById(R.id.nosection);
 		final Toast greeting = Toast.makeText(getActivity().getApplicationContext(),"What's up "+firstName+"!" ,Toast.LENGTH_LONG);
 		greeting.setGravity(Gravity.TOP, 0, 400);
-		new CountDownTimer(3000, 1000) {
+		final CountDownTimer showGreeting = new CountDownTimer(3000, 1500) {
 		    public void onTick(long millisUntilFinished) {
 		    	greeting.show();
 		    }
 		    public void onFinish() {
-		    	greeting.show();
+		    	//greeting.show();
 		    }
 		}.start();
+		
+		rootView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showGreeting.cancel();
+			}
+		});
 		
 		mPullToRefreshLayout = (PullToRefreshLayout)rootView.findViewById(R.id.ptr_layout);
 		// Now setup the PullToRefreshLayout
