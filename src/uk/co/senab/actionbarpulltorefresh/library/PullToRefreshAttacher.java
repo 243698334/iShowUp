@@ -16,6 +16,11 @@
 
 package uk.co.senab.actionbarpulltorefresh.library;
 
+import java.util.WeakHashMap;
+
+import uk.co.senab.actionbarpulltorefresh.library.listeners.HeaderViewListener;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -31,12 +36,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import java.util.WeakHashMap;
-
-import uk.co.senab.actionbarpulltorefresh.library.listeners.HeaderViewListener;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 public class PullToRefreshAttacher {
 

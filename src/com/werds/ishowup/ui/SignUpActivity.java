@@ -154,7 +154,7 @@ public class SignUpActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mLoginStatusMessageView.setText("Signing up...");
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
@@ -284,9 +284,8 @@ public class SignUpActivity extends Activity {
 				sp.edit().putString("NetID", mNetID).commit();
 				finish(); // What to do if login successfully
 			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				mNetIDView.setError("You have already signed up.");
+				mNetIDView.requestFocus();
 			}
 		}
 
