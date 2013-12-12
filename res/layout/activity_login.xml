@@ -37,33 +37,22 @@
         android:layout_height="match_parent"
         android:background="@color/main_blue"
         android:orientation="vertical" >
-
-        <!--
-             <TextView
-            android:id="@+id/app_title"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:text="@string/app_name"
-            android:textColor="#ffffff"
-            android:textSize="60sp" />
-        -->
-
+        
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
+            android:layout_width="270dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/logov2" />
+            android:layout_marginTop="70dp"
+            android:src="@drawable/logo" />
 
         <EditText
             android:id="@+id/netid"
             android:layout_width="240dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="175dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/logo"
             android:background="@drawable/oval_text_small_angle"
             android:ems="10"
             android:hint="@string/prompt_email"
