@@ -12,12 +12,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +32,20 @@ import android.widget.SimpleAdapter;
 
 import com.werds.ishowup.R;
 import com.werds.ishowup.dbcommunication.DatabaseCommunicator;
+import com.werds.ishowup.dbcommunication.DatabaseReader;
+import com.werds.ishowup.ui.MyRecordFragment.MyAdapter;
 
-public class ListViewFragment extends Fragment {
+public class ListViewFragment extends Fragment implements OnRefreshListener {
 
 	private static final String ATTENDANCE_HISTORY_URL = "http://web.engr.illinois.edu/~ishowup4cs411/cgi-bin/attendancehistory.php";
 	public static final String POSITION_KEY = "com.burnside.embeddedfragmenttest.POSITION";
-	private ListView list;
 	private SharedPreferences sp;
 	private int sectionPosition;
 
+	private PullToRefreshLayout mPullToRefreshLayout;
+	private ListView listView;
+
+	
 	public static ListViewFragment newInstance(int position) {
 		ListViewFragment fragment = new ListViewFragment();
 		fragment.setPosition(position);
@@ -55,10 +66,22 @@ public class ListViewFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_test, container,
 				false);
-		list = (ListView) rootView.findViewById(R.id.list);
-		list.setAdapter(new SimpleAdapter(getActivity(), getData(sectionPosition),
+		listView = (ListView) rootView.findViewById(R.id.list);
+		listView.setAdapter(new SimpleAdapter(getActivity(), getData(sectionPosition),
 				R.layout.item, new String[] { "record_date", "record_status" },
 				new int[] { R.id.record_date, R.id.record_status }));
+		
+		mPullToRefreshLayout = (PullToRefreshLayout)rootView.findViewById(R.id.ptr_layout);
+		// Now setup the PullToRefreshLayout
+		ActionBarPullToRefresh.from(getActivity())
+	            // Mark All Children as pullable
+	            .allChildrenArePullable()
+	            // Set the OnRefreshListener
+	            .listener(this)
+	            // Finally commit the setup to our PullToRefreshLayout
+	            .setup(mPullToRefreshLayout);
+		
+		
 		return rootView;
 	}
 
@@ -113,6 +136,44 @@ public class ListViewFragment extends Fragment {
 		}
 		listViewItems.add(currHistory);
 		return listViewItems;
+	}
+
+
+	@Override
+	public void onRefreshStarted(View view) {
+		new AsyncTask<Void, Void, Void>() {
+			
+			private List<Map<String, Object>> historyData; 
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				
+				//historyData = getData(sectionPosition);
+				//mPullToRefreshLayout.setRefreshComplete();
+
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// Notify PullToRefreshLayout that the refresh has finished
+				/*listView.setAdapter(new SimpleAdapter(getActivity(), historyData,
+						R.layout.item, new String[] { "record_date", "record_status" },
+						new int[] { R.id.record_date, R.id.record_status }));*/
+				mPullToRefreshLayout.setRefreshComplete();
+			}
+
+			
+		}.execute();
+
+		
 	}
 
 }
