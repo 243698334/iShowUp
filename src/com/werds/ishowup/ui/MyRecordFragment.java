@@ -1,5 +1,9 @@
 package com.werds.ishowup.ui;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +17,9 @@ import com.werds.ishowup.R;
 
 public class MyRecordFragment extends Fragment {
 
+	private static SharedPreferences sp;
+	private static String[] allSectionsArray;
+	
 	public static final String TAG = MyRecordFragment.class.getSimpleName();
 	private static String courseTitle;
 	private static String courseNo;
@@ -39,6 +46,9 @@ public class MyRecordFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_my_record,
 				container, false);
 
+		sp = getActivity().getSharedPreferences("userInfo", 0);
+		Set<String> allSections = sp.getStringSet("allSections", new LinkedHashSet<String>());
+		allSectionsArray = allSections.toArray(new String[0]);
 		/*list = (ListView) rootView.findViewById(R.id.list);
 		list.setAdapter(new SimpleAdapter(getActivity(), getData(),
 				R.layout.item, new String[] { "record_date", "record_status" },
@@ -62,64 +72,20 @@ public class MyRecordFragment extends Fragment {
 
 		@Override
 		public int getCount() {
-			return 4;
+			return allSectionsArray.length;
 		}
 
 		@Override
-		public Fragment getItem(int position) {
+		public Fragment getItem(int position) {			
 			Bundle args = new Bundle();
 			args.putInt(ListViewFragment.POSITION_KEY, position);
-			return ListViewFragment.newInstance(args);
+			return ListViewFragment.newInstance(position);
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			//return "Fragment # " + position;
-			courseTitle = "CS ";
-			switch(position) {
-			case 0:
-				courseNo = "411";
-				break;
-			case 1:
-				courseNo = "511";
-				break;
-			case 2:
-				courseNo = "357";
-				break;
-			case 3:
-				courseNo = "225";
-				break;
-			default:
-				break;
-			}
-			return courseTitle + courseNo;
+			return allSectionsArray[position];
 		}
 
 	}
-
-	/*private List<Map<String, Object>> getData() {
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("record_date", "Nov 11 2013");
-		map.put("record_status", R.drawable.check);
-		list.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("record_date", "Nov 13 2013 ");
-		map.put("record_status", R.drawable.check);
-		list.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("record_date", "Dec 2 2013");
-		map.put("record_status", R.drawable.cross);
-		list.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("record_date", "Dec 10 2013");
-		map.put("record_status", R.drawable.check);
-		list.add(map);
-
-		return list;
-	}*/
 }

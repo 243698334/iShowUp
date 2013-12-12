@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment implements OnRefreshListener{
 		
 		// Get All sections for this student from Shared Preference
 		sp = getActivity().getSharedPreferences("userInfo", 0);
-		allSections = sp.getStringSet("allSections", new HashSet<String>());
+		allSections = sp.getStringSet("allSections", new LinkedHashSet<String>());
 		netID = sp.getString("NetID", null);
 		firstName = sp.getString("FirstName", null);
 		
