@@ -3,7 +3,7 @@
 
     <color name="list_item_title">#fff</color>
     <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#003B7D</color>
+    <color name="list_background_pressed">#0071BC</color>
     <color name="list_divider">#272727</color>
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>

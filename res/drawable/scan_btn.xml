@@ -4,9 +4,9 @@
     <!-- #00000000 is transparent -->
 
     <gradient
-        android:endColor="@color/action_bar_gray"
+        android:endColor="@color/main_blue"
         android:gradientRadius="90"
-        android:startColor="@color/action_bar_gray"
+        android:startColor="@color/main_blue"
         android:type="radial" />
 
     <stroke
