@@ -39,7 +39,6 @@
         android:layout_below="@+id/you_have"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text=""
         android:textSize="25sp" />
 
     <net.shikii.widgets.SAutoBgButton

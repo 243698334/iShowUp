@@ -192,8 +192,11 @@ public class MainActivity extends Activity {
 			break;
 		case SIGN_OUT:
 			sp.edit().clear().commit();
-			finish();
-
+			Intent intent = new Intent(MainActivity.this,
+					LoginActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			break;
 		default:
 			break;
 		}

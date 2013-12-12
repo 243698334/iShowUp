@@ -62,7 +62,7 @@ public class MyRecordFragment extends Fragment {
 
 		@Override
 		public int getCount() {
-			return 5;
+			return 4;
 		}
 
 		@Override
@@ -84,13 +84,10 @@ public class MyRecordFragment extends Fragment {
 				courseNo = "511";
 				break;
 			case 2:
-				courseNo = "461";
+				courseNo = "357";
 				break;
 			case 3:
-				courseNo = "418";
-				break;
-			case 4:
-				courseNo = "440";
+				courseNo = "225";
 				break;
 			default:
 				break;

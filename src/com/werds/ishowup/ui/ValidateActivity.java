@@ -65,7 +65,7 @@ public class ValidateActivity extends Activity {
 	
 	private void onValidateSuccess() {
 		icon.setBackgroundResource(R.drawable.check);
-		hello.setText("Hello " + firstName);
+		hello.setText("Hello " + firstName + ",");
 		courseInfo.setText(sectionDisplayName);
 		return_btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
@@ -93,7 +93,7 @@ public class ValidateActivity extends Activity {
 	
 	private void onValidateFailed() {
 		icon.setBackgroundResource(R.drawable.cross);
-		hello.setText("Sorry " + firstName);
+		hello.setText("Sorry " + firstName + ",");
 		youHave.setText("Check in failed.");
 		return_btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
