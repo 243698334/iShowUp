@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- #00000000 is transparent -->
+
+    <gradient
+        android:endColor="@color/main_blue"
+        android:gradientRadius="90"
+        android:startColor="@color/main_blue"
+        android:type="radial" />
+
+    <stroke
+        android:width="2dip"
+        android:color="@color/gray_dark" />
+
+    <padding
+        android:bottom="10dp"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="7dp" />
+
+    <!-- Bigger the radius, rounder the corner -->
+
+
+</shape>
