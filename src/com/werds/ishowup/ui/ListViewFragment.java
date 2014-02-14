@@ -107,7 +107,7 @@ public class ListViewFragment extends Fragment implements OnRefreshListener {
 		parameters.put("sectionfullname", currSection);
 		DatabaseCommunicator historyReader = new DatabaseCommunicator(ATTENDANCE_HISTORY_URL);
 		String historyDataRaw = historyReader.execute(parameters);
-		Map<String, Object> currHistory = new LinkedHashMap<String, Object>();
+		//Map<String, Object> currHistory = new LinkedHashMap<String, Object>();
 
 		try {
 			JSONObject historyResultJSON = new JSONObject(historyDataRaw);
@@ -116,6 +116,7 @@ public class ListViewFragment extends Fragment implements OnRefreshListener {
 				JSONObject historyDataJSON = historyResultJSON.getJSONObject("Data");
 				Iterator<String> it = historyDataJSON.keys();
 				while (it.hasNext()) {
+					Map<String, Object> currHistory = new LinkedHashMap<String, Object>();
 					String currKey = it.next();
 					boolean currValue = historyDataJSON.getBoolean(currKey);
 					Date currSectionDate = new SimpleDateFormat("MMddyyyy").parse(currKey.substring(1));
@@ -124,17 +125,22 @@ public class ListViewFragment extends Fragment implements OnRefreshListener {
 					int currSectionHistoryFormatted = currValue ? R.drawable.check : R.drawable.cross;
 					currHistory.put("record_date", currSectionDateFormatted);
 					currHistory.put("record_status", currSectionHistoryFormatted);
+					listViewItems.add(currHistory);
 				}
 			}
 			if (historyStatus.equals("EMPTY")) {
+				Map<String, Object> currHistory = new LinkedHashMap<String, Object>();
 				currHistory.put("record_date", "You don't have any attendance records for this section.");
 				currHistory.put("record_status", R.drawable.check);
+				listViewItems.add(currHistory);
 			}
 		} catch (Exception e) {
+			Map<String, Object> currHistory = new LinkedHashMap<String, Object>();
 			currHistory.put("record_date", "Internal Error");
 			currHistory.put("record_status", R.drawable.cross);
+			listViewItems.add(currHistory);
 		}
-		listViewItems.add(currHistory);
+		//listViewItems.add(currHistory);
 		return listViewItems;
 	}
 
